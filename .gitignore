@@ -102,3 +102,10 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Visual Studio Solution files
+Logs-Screen.njsproj
+Logs-Screen.njsproj.user
+Properties/
+bin/
+obj/
