@@ -926,7 +926,13 @@
         },
         methods: {
             getDatabases() {
-                axios.get(this.backend + '/getDatabaseName?server=' + this.server).then(response => {
+                let auth = {
+                    username: this.email,
+                    password: this.password
+                };
+                axios.get(this.backend + '/getDatabaseName?server=' + this.server, {
+                    auth: auth
+                }).then(response => {
                     this.databases = Object.values(JSON.parse(response.data));
                 }).catch(err => {
                     console.log(err);
@@ -936,7 +942,9 @@
                 if (this.database == 'ComplianceMonitoring') this.job_name = 'ComplianceMonitoringDemo';
                 else this.job_name = this.database.replaceAll('_', '');
 
-                axios.get(this.backend + '/jobSteps?server=' + this.server + '&job_name=' + this.job_name).then(response => {
+                axios.get(this.backend + '/jobSteps?server=' + this.server + '&job_name=' + this.job_name, {
+                    auth: auth
+                }).then(response => {
                     this.job_steps = Object.values(JSON.parse(response.data));
                 }).catch(err => {
                     console.log(err);
@@ -949,7 +957,9 @@
                     job_name: this.job_name,
                     start_step: this.start_step
                 };
-                axios.post(this.backend + '/jobSteps', updates).then(response => {
+                axios.post(this.backend + '/jobSteps', updates, {
+                    auth: auth
+                }).then(response => {
                     this.job_execution = false;
                     try {
                         this.job_status = Object.values(JSON.parse(response.data));
@@ -984,7 +994,9 @@
                     db: this.database,
                     queries: this.queries
                 };
-                axios.post(this.backend + '/getData', updates).then(response => {
+                axios.post(this.backend + '/getData', updates, {
+                    auth: auth
+                }).then(response => {
                     if (response.status == 400) {
                         this.snackText = 'Could not reset workbench';
                         this.snackColor = 'error';
@@ -1009,7 +1021,9 @@
                     db: this.database,
                     queries: this.queries
                 };
-                axios.post(this.backend + '/getData', updates).then(response => {
+                axios.post(this.backend + '/getData', updates, {
+                    auth: auth
+                }).then(response => {
                     if (response.status == 400) {
                         this.snackText = 'Could not reset defer list';
                         this.snackColor = 'error';
@@ -1060,7 +1074,9 @@
                     db: this.database,
                     queries: this.queries
                 };
-                axios.post(this.backend + '/getData', updates).then(response => {
+                axios.post(this.backend + '/getData', updates, {
+                    auth: auth
+                }).then(response => {
                     if (response.status == 400) {
                         this.snackText = 'Could not commit changes';
                         this.snackColor = 'error';
@@ -1140,7 +1156,9 @@
                     password: this.password,
                     new_user: status
                 };
-                axios.post(this.backend + '/login', credentials).then(response => {
+                axios.post(this.backend + '/login', credentials, {
+                    auth: auth
+                }).then(response => {
                     if (response.status == 200) this.is_authenticated = true;
                 });
             },
@@ -1158,9 +1176,15 @@
                     this.snackText = 'Please make sure server and database is selected'
                 }
                 else {
+                    let auth = {
+                        username: this.email,
+                        password: this.password
+                    };
                     this.tableLoad.fill(true);
                     // Fetch kri_details
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=kri_details&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=kri_details&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_kri = Object.values(JSON.parse(response.data));
                         this.tableLoad[0] = false;
                         this.tableLoadCount++;
@@ -1168,7 +1192,9 @@
                         console.log(err);
                     });
                     // Fetch kri_parameters
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=kri_parameters&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=kri_parameters&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_params = Object.values(JSON.parse(response.data));
                         this.tableLoad[1] = false;
                         this.tableLoadCount++;
@@ -1176,7 +1202,9 @@
                         console.log(err);
                     });
                     // Fetch RiskAlgoParameters
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskAlgoParameters&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskAlgoParameters&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_algo_params = Object.values(JSON.parse(response.data));
                         this.tableLoad[2] = false;
                         this.tableLoadCount++;
@@ -1184,7 +1212,9 @@
                         console.log(err);
                     });
                     // Fetch ValidationErrors
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=ValidationErrors&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=ValidationErrors&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_errors = Object.values(JSON.parse(response.data));
                         this.tableLoad[3] = false;
                         this.tableLoadCount++;
@@ -1193,7 +1223,9 @@
                         console.log(err);
                     });
                     // Fetch time_frames
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=time_frames&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=time_frames&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_time_frame = Object.values(JSON.parse(response.data));
                         this.tableLoad[4] = false;
                         this.tableLoadCount++;
@@ -1201,7 +1233,9 @@
                         console.log(err);
                     });
                     // Fetch RiskyTransactions
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskyTransactions&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskyTransactions&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_transactions = Object.values(JSON.parse(response.data));
                         this.tableLoad[5] = false;
                         this.tableLoadCount++;
@@ -1210,7 +1244,9 @@
                         console.log(err);
                     });
                     // Fetch WarningTable
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=WarningTable&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=WarningTable&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_warnings = Object.values(JSON.parse(response.data));
                         this.tableLoad[6] = false;
                         this.tableLoadCount++;
@@ -1219,7 +1255,9 @@
                         console.log(err);
                     });
                     // Fetch Lookback Configuration
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=lookback_configuration&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=lookback_configuration&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_lookback = Object.values(JSON.parse(response.data));
                         this.tableLoad[7] = false;
                         this.tableLoadCount++;
@@ -1227,7 +1265,9 @@
                         console.log(err);
                     });
                     // Fetch Risk Algo Dictionary
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskAlgoDictionary&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskAlgoDictionary&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_algo_dictionary = Object.values(JSON.parse(response.data));
                         this.tableLoad[8] = false;
                         this.tableLoadCount++;
@@ -1235,7 +1275,9 @@
                         console.log(err);
                     });
                     // Fetch Execution Time Log
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=ExecutionTimeLog&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=ExecutionTimeLog&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_execution_time = Object.values(JSON.parse(response.data));
                         this.tableLoad[9] = false;
                         this.tableLoadCount++;
@@ -1243,7 +1285,9 @@
                         console.log(err);
                     });
                     // Fetch File Specs
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=File_Specs&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=File_Specs&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_file_specs = Object.values(JSON.parse(response.data));
                         this.tableLoad[10] = false;
                         this.tableLoadCount++;
@@ -1251,7 +1295,9 @@
                         console.log(err);
                     });
                     // Fetch Rule Dictionary
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RuleDictionary&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RuleDictionary&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_rule_dictionary = Object.values(JSON.parse(response.data));
                         this.tableLoad[11] = false;
                         this.tableLoadCount++;
@@ -1259,7 +1305,9 @@
                         console.log(err);
                     });
                     // Fetch Risk Audit Logs
-                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskAuditLogs&server=' + this.server).then(response => {
+                    axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskAuditLogs&server=' + this.server, {
+                        auth: auth
+                    }).then(response => {
                         this.datum_risk_audit = Object.values(JSON.parse(response.data));
                         this.tableLoad[12] = false;
                         this.tableLoadCount++;
