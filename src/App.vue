@@ -750,12 +750,12 @@
                 // form variables
                 valid: true,
                 new_valid: true,
-                password: 'Alpha491',
+                password: '',
                 passwordRules: [
                     v => !!v || 'Password is required',
                     v => (v && v.length <= 10) || 'Password must be less than 30 characters',
                 ],
-                email: 'bilal.khan@qordata.com',
+                email: '',
                 emailRules: [
                     v => !!v || 'E-mail is required',
                     v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -790,7 +790,7 @@
                 max25chars: v => v.length <= 25 || 'Input too long!',
                 isBinary: v => v >= 0 && v <= 1 || 'Value must be binary',
                 maxTimeFrame: v => v >= 1 && v <= 12 || 'Last I checked, there are 12 months in a year!',
-                is_authenticated: true,
+                is_authenticated: false,
                 pagination: {},
                 update_tables: ['kri_details', 'kri_parameters', 'file_specs'],
                 headers_kri: [
@@ -951,7 +951,7 @@
             },
             jobName() {
                 if (this.database == 'ComplianceMonitoring') this.job_name = 'ComplianceMonitoringDemo';
-                else this.job_name = this.database.replaceAll('_', '');
+                else if (this.database != null) this.job_name = this.database.replaceAll('_', '');
 
                 let auth = {
                     username: this.email,
@@ -1197,7 +1197,27 @@
                     new_user: status
                 };
                 axios.post(this.backend + '/login', credentials).then(response => {
-                    if (response.status == 200) this.is_authenticated = true;
+                    this.is_authenticated = response.data;
+                    if (this.is_authenticated && response.status == 200) {
+                        this.snackText = 'Welcome!';
+                        this.snackColor = 'success';
+                        this.executionSnack = true;
+                    }
+                    else if (response.status == 201) {
+                        this.snackText = 'Your user has been created. Please login now.';
+                        this.snackColor = 'success';
+                        this.executionSnack = true;
+                    }
+                    else {
+                        this.snackText = '401 Unauthorized!';
+                        this.snackColor = 'error';
+                        this.executionSnack = true;
+                    }
+                }).catch(err => {
+                    console.log(err);
+                    this.executionSnack = true;
+                    this.snackColor = 'error';
+                    this.snackText = '401 Unauthorized!';
                 });
             },
             // logout
