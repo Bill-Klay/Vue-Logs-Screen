@@ -158,7 +158,7 @@
                                 </v-row>
                                 <v-row>
                                     <v-col>
-                                        <v-btn class="ma-3" :loading="reset_workbench" :disabled="tableLoadCount != 12" color="#8B008B" @click="resetWorkbench" elevation="5">
+                                        <v-btn class="ma-3" :loading="reset_workbench" :disabled="databaseUpdate" color="#8B008B" @click="resetWorkbench" elevation="5" dark>
                                             Reset Workbench
                                             <template v-slot:commit>
                                                 Workbench is empty
@@ -167,7 +167,7 @@
                                         </v-btn>
                                     </v-col>
                                     <v-col>
-                                        <v-btn class="ma-3" :loading="reset_defer" :disabled="tableLoadCount != 12" color="#8B008B" @click="resetDefer" elevation="5">
+                                        <v-btn class="ma-3" :loading="reset_defer" :disabled="databaseUpdate" color="#8B008B" @click="resetDefer" elevation="5" dark>
                                             Reset Defer List
                                             <template v-slot:commit>
                                                 Defer List is empty
@@ -189,7 +189,7 @@
                                 <v-col class="newline">
                                     <v-row>
                                         <v-col>
-                                            <v-btn class="ma-3" :loading="tableLoad.every (value => value !== false)" :disabled="tableLoadCount != 12" color="success" @click="fetchData" elevation="5">
+                                            <v-btn class="ma-3" :loading="tableLoadCount !== 12" :disabled="databaseUpdate" color="success" @click="fetchData" elevation="5">
                                                 Fetch Data
                                                 <!--<template v-slot:"tableLoad.every (value => value === true)">
                                                     <span>Loading...</span>
@@ -197,7 +197,7 @@
                                             </v-btn>
                                         </v-col>
                                         <v-col>
-                                            <v-btn class="ma-3" :loading="commit" :disabled="tableLoadCount != 12" color="primary" @click="commitChanges" elevation="5">
+                                            <v-btn class="ma-3" :loading="commit" :disabled="databaseUpdate" color="primary" @click="commitChanges" elevation="5">
                                                 Commit Change
                                                 <template v-slot:commit>
                                                     <span>Updating...</span>
@@ -208,7 +208,7 @@
                                             <v-dialog transition="dialog-top-transition"
                                                       max-width="600">
                                                 <template v-slot:activator="{ on, attrs }">
-                                                    <v-btn color="warning" v-bind="attrs" v-on="on" elevation="5" style="margin-top:12px;" :loading="job_execution" :disabled="tableLoadCount != 12">Execute Job</v-btn>
+                                                    <v-btn color="warning" v-bind="attrs" v-on="on" elevation="5" style="margin-top:12px;" :loading="job_execution" :disabled="databaseUpdate">Execute Job</v-btn>
                                                 </template>
                                                 <template v-slot:default="dialog">
                                                     <v-card>
@@ -750,12 +750,12 @@
                 // form variables
                 valid: true,
                 new_valid: true,
-                password: '',
+                password: 'Alpha491',
                 passwordRules: [
                     v => !!v || 'Password is required',
                     v => (v && v.length <= 10) || 'Password must be less than 30 characters',
                 ],
-                email: '',
+                email: 'bilal.khan@qordata.com',
                 emailRules: [
                     v => !!v || 'E-mail is required',
                     v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -764,7 +764,7 @@
                 // data variables
                 num: null,
                 backend: "http://localhost:5555",
-                tableLoadCount: -1,
+                tableLoadCount: 12,
                 status_message: null,
                 job_name: '',
                 job_steps: [],
@@ -790,8 +790,9 @@
                 max25chars: v => v.length <= 25 || 'Input too long!',
                 isBinary: v => v >= 0 && v <= 1 || 'Value must be binary',
                 maxTimeFrame: v => v >= 1 && v <= 12 || 'Last I checked, there are 12 months in a year!',
-                is_authenticated: false,
+                is_authenticated: true,
                 pagination: {},
+                update_tables: ['kri_details', 'kri_parameters', 'file_specs'],
                 headers_kri: [
                     { text: 'ID', value: 'ID' },
                     { text: 'KRI Name', value: 'kri_name' },
@@ -924,6 +925,16 @@
                 queries: []
             }
         },
+        computed: {
+            databaseUpdate() {
+                return this.database == null ? true : false;
+            }
+        },
+        watch: {
+            database() {
+                this.queries = [];
+            }
+        },
         methods: {
             getDatabases() {
                 let auth = {
@@ -942,6 +953,10 @@
                 if (this.database == 'ComplianceMonitoring') this.job_name = 'ComplianceMonitoringDemo';
                 else this.job_name = this.database.replaceAll('_', '');
 
+                let auth = {
+                    username: this.email,
+                    password: this.password
+                };
                 axios.get(this.backend + '/jobSteps?server=' + this.server + '&job_name=' + this.job_name, {
                     auth: auth
                 }).then(response => {
@@ -956,6 +971,10 @@
                     server: this.server,
                     job_name: this.job_name,
                     start_step: this.start_step
+                };
+                let auth = {
+                    username: this.email,
+                    password: this.password
                 };
                 axios.post(this.backend + '/jobSteps', updates, {
                     auth: auth
@@ -994,6 +1013,10 @@
                     db: this.database,
                     queries: this.queries
                 };
+                let auth = {
+                    username: this.email,
+                    password: this.password
+                };
                 axios.post(this.backend + '/getData', updates, {
                     auth: auth
                 }).then(response => {
@@ -1021,6 +1044,10 @@
                     db: this.database,
                     queries: this.queries
                 };
+                let auth = {
+                    username: this.email,
+                    password: this.password
+                };
                 axios.post(this.backend + '/getData', updates, {
                     auth: auth
                 }).then(response => {
@@ -1044,7 +1071,10 @@
                 this.snackColor = 'success'
                 this.snackText = 'Data saved'
                 //if (column == 'is_active' && (newValue != 0 && newValue != 1)) newValue = 0
-                this.queries.push('UPDATE ' + table + ' SET ' + column + ' = ' + newValue + ' WHERE ID = ' + id)
+                if (this.update_tables.indexOf(table) !== -1) {
+                    this.queries.push('UPDATE ' + table + ' SET ' + column + ' = ' + newValue + ', updated_date = GETDATE(), updated_by = ' + '\'' + this.email + '\'' + ' WHERE ID = ' + id);
+                }
+                else this.queries.push('UPDATE ' + table + ' SET ' + column + ' = ' + newValue + ' WHERE ID = ' + id);
                 console.log(this.queries)
             },
             cancel() {
@@ -1074,6 +1104,10 @@
                     db: this.database,
                     queries: this.queries
                 };
+                let auth = {
+                    username: this.email,
+                    password: this.password
+                };
                 axios.post(this.backend + '/getData', updates, {
                     auth: auth
                 }).then(response => {
@@ -1082,13 +1116,19 @@
                         this.snackColor = 'error';
                         this.executionSnack = true;
                     }
-                    else {
+                    else if (response.status == 200) {
                         this.snackText = 'Changes commited';
                         this.snackColor = 'success';
                         this.executionSnack = true;
                     }
                     console.log(response.data);
                     this.queries = [];
+                    this.commit = false;
+                }).catch(err => {
+                    console.log(err);
+                    this.snackText = 'Could not commit changes';
+                    this.snackColor = 'error';
+                    this.executionSnack = true;
                     this.commit = false;
                 });
             },
@@ -1156,9 +1196,7 @@
                     password: this.password,
                     new_user: status
                 };
-                axios.post(this.backend + '/login', credentials, {
-                    auth: auth
-                }).then(response => {
+                axios.post(this.backend + '/login', credentials).then(response => {
                     if (response.status == 200) this.is_authenticated = true;
                 });
             },
@@ -1216,11 +1254,12 @@
                         auth: auth
                     }).then(response => {
                         this.datum_errors = Object.values(JSON.parse(response.data));
+                    }).catch(err => {
+                        console.log(err);
+                    }).finally(() => {
                         this.tableLoad[3] = false;
                         this.tableLoadCount++;
                         this.verifyStatus();
-                    }).catch(err => {
-                        console.log(err);
                     });
                     // Fetch time_frames
                     axios.get(this.backend + '/getData?db=' + this.database + '&table=time_frames&server=' + this.server, {
@@ -1237,22 +1276,24 @@
                         auth: auth
                     }).then(response => {
                         this.datum_transactions = Object.values(JSON.parse(response.data));
+                    }).catch(err => {
+                        console.log(err);
+                    }).finally(() => {
                         this.tableLoad[5] = false;
                         this.tableLoadCount++;
                         this.verifyStatus();
-                    }).catch(err => {
-                        console.log(err);
                     });
                     // Fetch WarningTable
                     axios.get(this.backend + '/getData?db=' + this.database + '&table=WarningTable&server=' + this.server, {
                         auth: auth
                     }).then(response => {
                         this.datum_warnings = Object.values(JSON.parse(response.data));
+                    }).catch(err => {
+                        console.log(err);
+                    }).finally(() => {
                         this.tableLoad[6] = false;
                         this.tableLoadCount++;
                         this.verifyStatus();
-                    }).catch(err => {
-                        console.log(err);
                     });
                     // Fetch Lookback Configuration
                     axios.get(this.backend + '/getData?db=' + this.database + '&table=lookback_configuration&server=' + this.server, {
