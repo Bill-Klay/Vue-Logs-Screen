@@ -37,7 +37,7 @@ Select the database server and the client database you'd like to access and clic
   <h3 align="center">Vue Logs Screen</h3>
 
   <p align="center">
-    An awesome logging screen your projects!
+    An awesome logging screen for your projects!
     <br />
     <a href="https://github.com/Bill-Klay/Vue-Logs-Screen"><strong>Explore the docs »</strong></a>
     <br />
@@ -100,7 +100,7 @@ The status are:
 The GIF are randomly fetched from a predetermined list which can be found in the assets directory. 
 Make ample adjustments to the risk engine and its parameters, hit enter and your query will be saved, but not yet executed. 
 To make the visible adjustments to the database itself click on *Commit Changes* and *Execute Job* afterwards to start the ETL process. 
-Each table data, button action, and user sessions are maintained via **Flask** server which has been served using **Waitress** due a windows environment. 
+Each table data, button action, and user sessions are maintained via **Flask** server which has been served using **Waitress** due to a windows environment. 
 *Flask RESTful* also utilzes a **TinyDB** database for storing user login credentials and maintaining session using *Basic HTTP* authentication using flask's own HTTP auth library. 
 Both the frontend and the backend are hosted on a local server by creating a separate **Windows Service** for each. 
 An **Express** server was created to run the Vue app and was converted into a windows server using **node-windows**. 
@@ -172,9 +172,9 @@ What this means is that the edit box can be cancelled by hitting the **ESC** key
 On striking the **Enter** key any changes made to the current cell will be reflected, saved and converted into a query for execution, but not yet commited to the database. 
 To do so, click the *Commit Changes* button which will return the status of the changes moved. 
 
-![Complete Demo shot]('https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/complete_demo.jpeg')
+![Complete Demo shot](https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/complete_demo.jpeg)
 
-_For more examples, please refer to the [Documentation](https://github.com/Bill-Klay/Vue-Logs-Screen)_ at the start.
+_For more examples, please refer to the Documentation_ at the start.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
