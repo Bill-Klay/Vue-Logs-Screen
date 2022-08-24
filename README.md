@@ -89,7 +89,7 @@ A side **hamburger menu** can be used for the ease of traversal.
 The list of servers is predetermined for the which can be selected from the select database dropdown. 
 After selecting the sever the list of database will be populated and the desired one can be selected from the second drop down. 
 This drop down is a *multiselect* component of Vue and can be installed seperately. 
-On selecting a database the disabled buttons will become available along with the *Reset Defer List* and *Reset Workbench* button become visisble. 
+On selecting a database the disabled buttons will become available along with the *Reset Defer List* and *Reset Workbench* button becomes visible. 
 Once the complete data has been fetched from the selected database a *GIF* will appear along the logo of the application which will basically summarize the results of the last execution and state its status. 
 The status are:
 * All Good!
