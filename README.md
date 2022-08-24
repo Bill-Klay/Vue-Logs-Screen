@@ -173,7 +173,7 @@ What this means is that the edit box can be cancelled by hitting the **ESC** key
 On striking the **Enter** key any changes made to the current cell will be reflected, saved and converted into a query for execution, but not yet commited to the database. 
 To do so, click the *Commit Changes* button which will return the status of the changes moved. 
 
-![login screen](https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/login.jpeg)
+![login screen](https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/login.png)
 
 ![Complete Demo shot](https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/complete_demo.jpeg)
 
