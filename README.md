@@ -1,5 +1,5 @@
 # Vue Logs Screen
-Compliance Monitoring AKA Risk Based Assessment is a tool for analysis and generating risk scores from compliance data of pharmaceutical industries. The product itself on a much larger scales takes time in debugging and altering stored procedures as per business requirements. 
+Compliance Monitoring AKA **Risk Based Assessment** is a tool for analysis and generating risk scores from compliance data of pharmaceutical industries. The product itself on a much larger scales takes time in debugging and altering stored procedures as per business requirements. 
 This Logs Screen acts as an admin panel for the product itself and presents interactive tables for the Developer, Quality Assurance, and Business Analysts for adjusting algorithm weights, the algorithms being executed themselves and a quick overview for the last execution of the ETL or risk engine.
 All the current customers, product releases and servers avalable can accessed via a single page application and edited.
 
@@ -31,7 +31,7 @@ Select the database server and the client database you'd like to access and clic
 <br />
 <div align="center">
   <a href="https://github.com/Bill-Klay/Vue-Logs-Screen">
-    <img src="src/assets/Pandas_Black.png" alt="Logo" width="80" height="130">
+    <img src="src/assets/Pandas_Black.png" alt="Logo" width="120" height="200">
   </a>
 
   <h3 align="center">Vue Logs Screen</h3>
@@ -151,7 +151,7 @@ _Below are the instructions for installing the required libraries and frameworks
    ```sh
    npm install
    ```
-3. Install Python packages `requirements.txt`
+3. Install Python packages
    ```sh
    pip install -r requirements.txt
    ```
@@ -172,7 +172,7 @@ What this means is that the edit box can be cancelled by hitting the **ESC** key
 On striking the **Enter** key any changes made to the current cell will be reflected, saved and converted into a query for execution, but not yet commited to the database. 
 To do so, click the *Commit Changes* button which will return the status of the changes moved. 
 
-![Demo shot]('https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/complete_demo.jpeg')
+![Complete Demo shot]('https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/complete_demo.jpeg')
 
 _For more examples, please refer to the [Documentation](https://github.com/Bill-Klay/Vue-Logs-Screen)_ at the start.
 
@@ -192,7 +192,7 @@ See the [open issues](https://github.com/Bill-Klay/Vue-Logs-Screen/issues) for a
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
-## Contributing
+## Contributing :busts_in_silhouette:
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -227,9 +227,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
+## Acknowledgments :gift:
 
-I've used this space to give credits to a few of my favourite links I had fun visiting while creating this :red_heart:
+I've used this space to give credits to a few of my favourite links I had fun visiting while creating this :heart:
 
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
