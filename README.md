@@ -1,5 +1,12 @@
-# Vue-Logs-Screen
-A web frontend for a much larger project. Flask REST API provides functionality to fetch data from a T-SQL database (mainly logging tables) to a Vue.js frontend that displays logs table on a single screen using Vuetify for making debugging a lot easier for Devs and QAs.
+# Vue Logs Screen
+Compliance Monitoring AKA Risk Based Assessment is a tool for analysis and generating risk scores from compliance data of pharmaceutical industries. The product itself on a much larger scales takes time in debugging and altering stored procedures as per business requirements. 
+This Logs Screen acts as an admin panel for the product itself and presents interactive tables for the Developer, Quality Assurance, and Business Analysts for adjusting algorithm weights, the algorithms being executed themselves and a quick overview for the last execution of the ETL or risk engine.
+All the current customers, product releases and servers avalable can accessed via a single page application and edited.
+
+On accessing the designated IP and port on the QA server the application has been deployed to you'll be presented with a log in screen. 
+If you're new to the CC/CM team please create a new user login password and proceed accorsingly. 
+You'll be presented with the *Harry Potter* oath of "I solemnly swear that I'm upto no good" since you'll be accessing sensitive information of the selected customer's database and configuration. 
+Select the database server and the client database you'd like to access and click *Fetch Data* which will inturn populate all the tables, the list of which can be accessed from the *Hamburger* menu on the top left of the screen.
 
 <div id="top"></div>
 <!--
@@ -10,8 +17,6 @@ A web frontend for a much larger project. Flask REST API provides functionality 
 *** Thanks again! Now go create something AMAZING! :D
 -->
 
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -20,39 +25,30 @@ A web frontend for a much larger project. Flask REST API provides functionality 
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/Bill-Klay/Vue-Logs-Screen">
+    <img src="src/assets/Pandas_Black.png" alt="Logo" width="80" height="130">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Vue Logs Screen</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    An awesome logging screen your projects!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Bill-Klay/Vue-Logs-Screen"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://github.com/Bill-Klay/Vue-Logs-Screen">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/Bill-Klay/Vue-Logs-Screen/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/Bill-Klay/Vue-Logs-Screen/issues">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -80,108 +76,120 @@ A web frontend for a much larger project. Flask REST API provides functionality 
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## About The Project :book:
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![Demo shot](https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/Demo.jpeg)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+This admin panel screen has been developed for the ease and use of developers, quality management team and business analysts in mind.
+Configuration and debugging tables are presented on the home screen of the application. 
+The single page application uses **Vue** as the frontend framework of choice which is connected to a **Microsoft SQL Server 2019** database at the back and fetches the relied information. 
+Changes can be commited, ETL job can be executed and dynamic lists can be refreshed. 
+A side **hamburger menu** can be used for the ease of traversal. 
+The list of servers is predetermined for the which can be selected from the select database dropdown. 
+After selecting the sever the list of database will be populated and the desired one can be selected from the second drop down. 
+This drop down is a *multiselect* component of Vue and can be installed seperately. 
+On selecting a database the disabled buttons will become available along with the *Reset Defer List* and *Reset Workbench* button become visisble. 
+Once the complete data has been fetched from the selected database a *GIF* will appear along the logo of the application which will basically summarize the results of the last execution and state its status. 
+The status are:
+* All Good!
+* All Good! See some warnings
+* Crash!
+* Risky Transaction is empty!
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-* [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
+The GIF are randomly fetched from a predetermined list which can be found in the assets directory. 
+Make ample adjustments to the risk engine and its parameters, hit enter and your query will be saved, but not yet executed. 
+To make the visible adjustments to the database itself click on *Commit Changes* and *Execute Job* afterwards to start the ETL process. 
+Each table data, button action, and user sessions are maintained via **Flask** server which has been served using **Waitress** due a windows environment. 
+*Flask RESTful* also utilzes a **TinyDB** database for storing user login credentials and maintaining session using *Basic HTTP* authentication using flask's own HTTP auth library. 
+Both the frontend and the backend are hosted on a local server by creating a separate **Windows Service** for each. 
+An **Express** server was created to run the Vue app and was converted into a windows server using **node-windows**. 
+Whilst the Flask server was hosted via server script running waitress and made into a Windows Service via **NSSM** (Non-Sucking Service Manager). 
+Please *Log Out* once your purpose of visiting the app is achieved. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+### Built With :computer:
 
+This section lists the technological stack that was utilized for the purpose of creating this application along with the specific purpose they serve. 
+
+* [Microsoft SQL Server](https://www.microsoft.com/en-us/sql-server) | Database Server
+* [Vuetify](https://vuetifyjs.com/en/) | Vue's very own material design framework
+* [Vue.js](https://vuejs.org/) | The goto choice for a progresive Frontend design
+* [Flask](https://flask.palletsprojects.com/en/2.2.x/) | Flask RESTful for backend
+* [NSSM](https://nssm.cc/download) | For creating windows services in the nicest way possible
+* [Express.js](http://expressjs.com/) | Fast minimalist Node.js server
+* [TinyDB](https://pypi.org/project/tinydb/) | A NoSQL database developed in Python
+* [Waitress](https://pypi.org/project/waitress/) | Production grade WSGI for Flask
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+In this section you can get the idea of to setup your own logs screen.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Environment setting required:
 * npm
   ```sh
   npm install npm@latest -g
   ```
 
+* Python
+
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+_Below are the instructions for installing the required libraries and frameworks required for the proper functioning of the application._
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/Bill-Klay/Vue-Logs-Screen.git
    ```
-3. Install NPM packages
+2. Install NPM packages
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Install Python packages `requirements.txt`
+   ```sh
+   pip install -r requirements.txt
    ```
-
+4. Create Windows Service for the frontend
+   ```sh
+   node winsw.js
+   ```
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Usage ![build](https://img.shields.io/badge/Build-Tested-green) ![build mode](https://img.shields.io/badge/Build-Debug%20Mode-orange)
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+The usage is pretty mainstream and has been stated at the start of this ReadMe. 
+Besides the viewing functionality of the application we can also edit data across the tables. 
+All the flags are presented in color chips which can be flipped. 
+On clicking an editable field a dialogue box appears which has been made persistant to avoid accidental confirmations. 
+What this means is that the edit box can be cancelled by hitting the **ESC** key, any changes made will be neglected. 
+On striking the **Enter** key any changes made to the current cell will be reflected, saved and converted into a query for execution, but not yet commited to the database. 
+To do so, click the *Commit Changes* button which will return the status of the changes moved. 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+![Demo shot]('https://github.com/Bill-Klay/Vue-Logs-Screen/blob/main/src/assets/complete_demo.jpeg')
+
+_For more examples, please refer to the [Documentation](https://github.com/Bill-Klay/Vue-Logs-Screen)_ at the start.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+- [x] Add Files_Specs table
+- [x] Add Reset Workbench
+- [ ] Add Reset Defer List
+- [ ] Adjust tables according to business needs
+- [ ] More tables?
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/Bill-Klay/Vue-Logs-Screen/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -197,9 +205,9 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+Thank you for visiting :green_heart:
+
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- LICENSE -->
 ## License
@@ -208,36 +216,29 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
-## Contact
+## Contact :email:
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+* [GitHub](https://github.com/Bill-Klay)
+* [Project Link](https://github.com/Bill-Klay/Vue-Logs-Screen)
+* [Email](mailto:bilal.khan2998@gmail.com) 
+* [LinkedIn](https://www.linkedin.com/in/bilalkhan29/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
+I've used this space to give credits to a few of my favourite links I had fun visiting while creating this :red_heart:
 
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
 * [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+* [Victor Mono](https://rubjo.github.io/victor-mono/)
+* [Doki Theme](https://doki-theme.unthrottled.io/themes/)
+* [Who really invented the light bulb?](https://artsandculture.google.com/story/who-really-invented-the-light-bulb-and-other-myths-debunked/cAKSW_mbN0mdJQ)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
