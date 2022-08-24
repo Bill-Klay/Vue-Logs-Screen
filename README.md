@@ -6,6 +6,7 @@ All the current customers, product releases and servers avalable can accessed vi
 On accessing the designated IP and port on the QA server the application has been deployed to you'll be presented with a log in screen. 
 If you're new to the CC/CM team please create a new user login password and proceed accorsingly. 
 You'll be presented with the *Harry Potter* oath of "I solemnly swear that I'm upto no good" since you'll be accessing sensitive information of the selected customer's database and configuration. 
+And the username and password are upside down just to keep things different ??
 Select the database server and the client database you'd like to access and click *Fetch Data* which will inturn populate all the tables, the list of which can be accessed from the *Hamburger* menu on the top left of the screen.
 
 <div id="top"></div>
