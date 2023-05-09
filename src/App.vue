@@ -1004,6 +1004,8 @@
             },
             resetWorkbench() {
                 this.reset_workbench = true;
+                this.queries.push('UPDATE speakerAggregateRiskScore SET in_workbench = 0;');
+                this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET in_workbench = 0;');
                 this.queries.push('TRUNCATE TABLE workbench_log_attachment;');
                 this.queries.push('DELETE FROM workbench_log;');
                 this.queries.push('DELETE FROM workbench;');
@@ -1037,8 +1039,8 @@
             },
             resetDefer() {
                 this.reset_defer = true;
-                this.queries.push('UPDATE speakerAggregateRiskScore SET in_workbench = 0;');
-                this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET in_workbench = 0;');
+                this.queries.push('UPDATE speakerAggregateRiskScore SET is_defer = 0;');
+                this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET is_defer = 0;');
                 let updates = {
                     server: this.server,
                     db: this.database,
