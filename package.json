@@ -1,56 +1,29 @@
 {
-  "name": "logs-screen",
-  "version": "0.1.0",
+  "name": "vuetify-project",
+  "version": "0.0.0",
   "private": true,
-  "description": "Logs-Screen",
-  "author": {
-    "name": ""
-  },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@mdi/font": "7.0.96",
+    "core-js": "^3.29.0",
+    "pinia": "^2.0.0",
+    "roboto-fontface": "*",
+    "vue": "^3.2.0",
+    "vue-router": "^4.0.0",
+    "vuetify": "^3.0.0",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "4.5.13",
-    "@vue/cli-plugin-eslint": "4.5.13",
-    "@vue/cli-service": "4.5.13",
-    "babel-eslint": "10.1.0",
-    "eslint": "6.8.0",
-    "eslint-plugin-vue": "6.2.2",
-    "sass": "~1.32.0",
-    "sass-loader": "^10.2.1",
-    "vue-cli-plugin-vuetify": "~2.4.8",
-    "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.3"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
-  "dependencies": {
-    "axios": "^0.27.2",
-    "victormono": "^1.5.3",
-    "vue-multiselect": "^2.1.6"
+    "@vitejs/plugin-vue": "^4.0.0",
+    "eslint": "^8.37.0",
+    "eslint-plugin-vue": "^9.3.0",
+    "sass": "^1.60.0",
+    "vite": "^4.2.0",
+    "vite-plugin-vuetify": "^1.0.0"
   }
 }

@@ -1,2 +1,57 @@
-# Vue-Logs-Screen
-A web frontend for a much larger project. Flask REST API provides functionality to fetch data from a T-SQL database (mainly logging tables) to a Vue.js frontend that displays logs table on a single screen using Vuetify for making debugging a lot easier for Devs and QAs.
+# essentials
+
+## Project setup
+
+```
+# yarn
+yarn
+
+# npm
+npm install
+
+# pnpm
+pnpm install
+```
+
+### Compiles and hot-reloads for development
+
+```
+# yarn
+yarn dev
+
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+```
+
+### Compiles and minifies for production
+
+```
+# yarn
+yarn build
+
+# npm
+npm run build
+
+# pnpm
+pnpm build
+```
+
+### Lints and fixes files
+
+```
+# yarn
+yarn lint
+
+# npm
+npm run lint
+
+# pnpm
+pnpm lint
+```
+
+### Customize configuration
+
+See [Configuration Reference](https://vitejs.dev/config/).
