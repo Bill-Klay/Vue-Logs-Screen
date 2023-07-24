@@ -109,3 +109,5 @@ Logs-Screen.njsproj.user
 Properties/
 bin/
 obj/
+
+daemon/

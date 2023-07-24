@@ -36,7 +36,7 @@
                                             Login
                                         </v-btn>
                                     </template>
-                                    <span>I solemnly swear that I am upto no good</span>
+                                    <span>With great powers, comes great responsibility</span>
                                 </v-tooltip>
 
                                 <v-dialog transition="dialog-top-transition"
@@ -460,7 +460,7 @@
                                             </v-toolbar>
                                         </template>
                                         <template v-slot:item.timeSpan="props">
-                                            <v-edit-dialog :return-value.sync="props.item.timeSpan" @save="save(props.item.id, props.item.timeSpan, 'timeSpan', 'time_frame')" @cancel="cancel" @open="open" persistent>
+                                            <v-edit-dialog :return-value.sync="props.item.timeSpan" @save="save(props.item.id, props.item.timeSpan, 'timeSpan', 'time_frames')" @cancel="cancel" @open="open" persistent>
                                                 {{ props.item.timeSpan }}
                                                 <template v-slot:input>
                                                     <v-text-field v-model="props.item.timeSpan" :rules="[maxTimeFrame]" label="Edit" single-line></v-text-field>
@@ -468,7 +468,7 @@
                                             </v-edit-dialog>
                                         </template>
                                         <template v-slot:item.isActive="props">
-                                            <v-edit-dialog :return-value.sync="props.item.isActive" @save="save(props.item.id, props.item.isActive, 'isActive', 'time_frame')" @cancel="cancel" @open="open" persistent>
+                                            <v-edit-dialog :return-value.sync="props.item.isActive" @save="save(props.item.id, props.item.isActive, 'isActive', 'time_frames')" @cancel="cancel" @open="open" persistent>
                                                 <v-chip :color="getColor(props.item.isActive)" dark>
                                                     {{ props.item.isActive }}
                                                 </v-chip>
@@ -763,7 +763,7 @@
                 value: String,
                 // data variables
                 num: null,
-                backend: "http://localhost:5555",
+                backend: "http://10.0.100.146:5555",
                 tableLoadCount: 12,
                 status_message: null,
                 job_name: '',
@@ -1004,6 +1004,8 @@
             },
             resetWorkbench() {
                 this.reset_workbench = true;
+				this.queries.push('UPDATE speakerAggregateRiskScore SET in_workbench = 0;');
+				this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET in_workbench = 0;');
                 this.queries.push('TRUNCATE TABLE workbench_log_attachment;');
                 this.queries.push('DELETE FROM workbench_log;');
                 this.queries.push('DELETE FROM workbench;');
@@ -1037,8 +1039,8 @@
             },
             resetDefer() {
                 this.reset_defer = true;
-                this.queries.push('UPDATE speakerAggregateRiskScore SET in_workbench = 0;');
-                this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET in_workbench = 0;');
+                this.queries.push('UPDATE speakerAggregateRiskScore SET is_defer = 0;');
+                this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET is_defer = 0;');
                 let updates = {
                     server: this.server,
                     db: this.database,
@@ -1320,10 +1322,11 @@
                         auth: auth
                     }).then(response => {
                         this.datum_lookback = Object.values(JSON.parse(response.data));
-                        this.tableLoad[7] = false;
-                        this.tableLoadCount++;
                     }).catch(err => {
                         console.log(err);
+                    }).finally(() => {
+                        this.tableLoad[7] = false;
+                        this.tableLoadCount++;
                     });
                     // Fetch Risk Algo Dictionary
                     axios.get(this.backend + '/getData?db=' + this.database + '&table=RiskAlgoDictionary&server=' + this.server, {
@@ -1340,10 +1343,11 @@
                         auth: auth
                     }).then(response => {
                         this.datum_execution_time = Object.values(JSON.parse(response.data));
-                        this.tableLoad[9] = false;
-                        this.tableLoadCount++;
                     }).catch(err => {
                         console.log(err);
+                    }).finally(() => {
+                        this.tableLoad[9] = false;
+                        this.tableLoadCount++;
                     });
                     // Fetch File Specs
                     axios.get(this.backend + '/getData?db=' + this.database + '&table=File_Specs&server=' + this.server, {

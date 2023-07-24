@@ -14,6 +14,7 @@ import sqlalchemy as sa
 import pandas as pd
 import json
 import bcrypt
+import logging
 
 app = Flask(__name__)
 api = Api(app)
@@ -24,7 +25,7 @@ auth = HTTPBasicAuth()
 def verify(username, password):
     if not (username and password):
         return False
-    db = TinyDB('./db.json')
+    db = TinyDB('E:/Bilal_Khan/Vue-Logs-Screen/server/db.json')
     user = Query()
     result = db.search(user.email == username)
     if len(result) != 0:
@@ -114,12 +115,23 @@ class Databases(Resource):
     @auth.login_required
     def get(self):
         #Database connection
-        server = request.args.get('server')
-        engine = sa.create_engine('mssql+pyodbc://'+server+'/master?driver=SQL+Server+Native+Client+11.0') 
-        query = "SELECT name FROM sys.databases WHERE name LIKE 'ComplianceMonitoring%';"
-        data = pd.read_sql(query, engine)
-        retMap = data['name'].to_json()
-        return retMap
+        try:
+            server = request.args.get('server')
+            engine = sa.create_engine('mssql+pyodbc://'+server+'/master?driver=SQL+Server+Native+Client+11.0') 
+            query = "SELECT name FROM sys.databases WHERE name LIKE 'ComplianceMonitoring%';"
+            data = pd.read_sql(query, engine)
+            retMap = data['name'].to_json()
+            return retMap
+        except Exception as Arg:
+            f = open("../../server_logs.txt", "a")
+         
+            # writing in the file
+            f.write(str(Arg))
+             
+            # closing the file
+            f.close()
+            response = Response(status=400)
+            return response
 
 class JobSteps(Resource):
     @auth.login_required
@@ -156,7 +168,7 @@ class User(Resource):
         #self.data = dict()
     
     def post(self):
-        db = TinyDB('./db.json')
+        db = TinyDB('E:/Bilal_Khan/Vue-Logs-Screen/server/db.json')
         user = Query()
         param = request.get_json()
         email = param["email"]
