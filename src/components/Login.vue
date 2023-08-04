@@ -46,11 +46,12 @@
         </v-row>
         <v-row justify="center">
             <v-col cols="8">
-                <div style="border: 1px solid grey; text-align: center;">
-                    Made with <v-icon color="error" icon="mdi-heart"></v-icon> by yours truly using
-                    <v-icon color="success" icon="mdi-vuejs"></v-icon> and
-                    <v-icon color="primary" icon="mdi-vuetify"></v-icon> and
-                    <v-icon color="warning" icon="mdi-language-python"></v-icon>
+                <div style="border: 1px solid grey; text-align: center; color: grey;">
+                    Made with <v-icon color="error" icon="mdi-heart"></v-icon> by yours truly -
+                    <v-icon color="success" icon="mdi-vuejs"></v-icon>
+                    <v-icon color="primary" icon="mdi-vuetify"></v-icon>
+                    <v-icon color="warning" icon="mdi-language-python"></v-icon> - don't forget to star the repo
+                    <a href="https://github.com/Bill-Klay/Vue-Logs-Screen"><v-icon icon="mdi-github"></v-icon></a>
                 </div>
             </v-col>
         </v-row>
@@ -67,18 +68,7 @@
         data() {
             return {
                 validLogin: false,
-                validSignup: false,
-                password: '',
-                passwordRules: [
-                    v => !!v || 'Password is required',
-                    v => (v && v.length >= 8) || 'Password must be atleast 8 characters',
-                ],
-                email: '',
-                emailRules: [
-                    v => !!v || 'E-mail is required',
-                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-                ],
-                value: String,
+                validSignup: false
             }
         },
         methods: {
