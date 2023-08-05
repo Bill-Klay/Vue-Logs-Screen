@@ -1,4 +1,5 @@
 from flask import Flask, request
+from flask_cors import CORS
 from flask_restful import Resource, Api
 from tinydb import TinyDB, Query
 import bcrypt
@@ -6,6 +7,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 app.config['JWT_SECRET_KEY'] = 'this is a very strong secret key!'  # Change this!
 jwt = JWTManager(app)
