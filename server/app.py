@@ -25,14 +25,14 @@ class Register(Resource):
         user_exists = db.search(User.username == username)
 
         if user_exists:
-            return {"message": "User already exists"}, 400
+            return {"message": "User already exists", "color": "error"}, 200
         else:
             # Hash the password
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
             
             # Store the username and hashed password in the database
             db.insert({'username': username, 'password': hashed_password.decode('utf-8')})
-            return {"message": "User created successfully"}, 201    
+            return {"message": "User created successfully", "color": "success"}, 201    
 
 # class Login for logging in users
 class Login(Resource):

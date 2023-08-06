@@ -11,7 +11,7 @@
                         <img src="..\assets\qordata_logo.png" style="margin-top: 100%; position: relative; max-height: 27%;"/>
                     </v-col>
                 </v-row>
-                <HelloWorld @changeStatus="loginButtonStatus"/>
+                <HelloWorld @changeStatus="loginButtonStatus"/> <!-- the child event is captured here -->
                 <v-btn 
                     :disabled="!validLogin" 
                     color="primary" 
@@ -26,25 +26,36 @@
                     </template>
                     <template v-slot:default="{ isActive }">
                         <v-card>
-                        <v-toolbar color="purple" title="Welcome to the team!"></v-toolbar>
-                        <v-card-text>
-                            <HelloWorld @changeStatus="signupButtonStatus"/>
-                        </v-card-text>
-                        <v-card-actions class="justify-end">
-                        <v-btn color="purple" @click="isActive.value = false" :disabled="!validSignup">
-                            Sign me up!
-                        </v-btn>
-                        <v-btn color="purple" @click="isActive.value = false">
-                            Maybe Later?
-                        </v-btn>
-                        </v-card-actions>
+                            <v-toolbar color="purple" title="Welcome to the team!"></v-toolbar>
+                            <v-card-text>
+                                <HelloWorld @changeStatus="signupButtonStatus"/>
+                            </v-card-text>
+                            <v-card-actions class="justify-end">
+                                <v-btn color="purple" @click="signup(); isActive.value = false" :disabled="!validSignup">
+                                    Sign me up!
+                                </v-btn>
+                                <v-btn color="purple" @click="isActive.value = false">
+                                    Maybe Later?
+                                </v-btn>
+                            </v-card-actions>
                         </v-card>
                     </template>
                 </v-dialog>
+                <v-snackbar v-model="snackExecution" :timeout="3000" :color="snackColor" variant="outlined">
+                    {{ snackMessage }}
+                    <template v-slot:actions>
+                        <v-btn
+                            :color="snackColor"
+                            variant="text"
+                            @click="snackExecution = false">
+                            Close
+                        </v-btn>
+                    </template>
+                </v-snackbar>
             </v-col>
             <v-col></v-col>
         </v-row>
-        <v-row justify="center">
+        <v-row justify="center" v-if="false">
             <v-col cols="8">
                 <div style="border: 1px solid grey; text-align: center; color: grey;">
                     Made with <v-icon color="error" icon="mdi-heart"></v-icon> by yours truly -
@@ -60,23 +71,45 @@
 
 <script>
     import HelloWorld from './HelloWorld.vue'
+    import axios from 'axios'
+
     export default {
         name: 'Login',
+        username: '', // no need to place these credentials values in the return scope
+        password: '', // since value is returned here from child
         components: {
             HelloWorld
         },
         data() {
             return {
                 validLogin: false,
-                validSignup: false
+                validSignup: false,
+                snackMessage: '',
+                snackColor: '',
+                snackExecution: false,
+                backend: 'http://127.0.0.1:5000' // but this value needs to declared when the instance is created
             }
         },
         methods: {
-            loginButtonStatus(newStatus) {
-                this.validLogin = newStatus
+            loginButtonStatus(payLoad) { // the emited event from the child captured here
+                this.validLogin = payLoad.buttonStatus
+                this.username = payLoad.username
+                this.password = payLoad.password
             },
-            signupButtonStatus(newStatus) {
-                this.validSignup = newStatus
+            signupButtonStatus(payLoad) {
+                this.validSignup = payLoad.buttonStatus
+                this.username = payLoad.username
+                this.password = payLoad.password
+            },
+            signup() {
+                this.validSignup = false
+                axios.post(this.backend + '/register', { username: this.username, password: this.password }).then(response => {
+                    this.snackMessage = response.data.message
+                    this.snackColor = response.data.color
+                    this.snackExecution = true
+                }).catch(error => {
+                    console.log("Invalid request: user not created", error)
+                })
             }
         }
     }
