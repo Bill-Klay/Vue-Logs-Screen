@@ -15,6 +15,7 @@
                 <v-btn 
                     :disabled="!validLogin" 
                     color="primary" 
+                    @click="login"
                     title="With great power comes great responsibility">
                     Login
                 </v-btn>
@@ -108,15 +109,22 @@
                     this.snackColor = response.data.color
                     this.snackExecution = true
                 }).catch(error => {
-                    console.log("Invalid request: user not created", error)
+                    console.log("Invalid request", error)
+                })
+            },
+            login() {
+                axios.post(this.backend + '/login', { username: this.username, password: this.password }).then(response => {
+                    this.snackMessage = response.data.message
+                    this.snackColor = response.data.color
+                    this.snackExecution = true
+                    if(response.data.access_token) {
+                        localStorage.setItem('token', response.data.access_token)
+                        this.$router.push('/home')
+                    }
+                }).catch(error => {
+                    console.log("Invalid request", error)
                 })
             }
         }
     }
 </script>
-
-<style>
-    div {
-        font-family: 'Victor Mono'
-    }
-</style>

@@ -5,3 +5,9 @@
 <script setup>
   //
 </script>
+
+<style>
+  body {
+      font-family: 'Victor Mono'
+  }
+</style>

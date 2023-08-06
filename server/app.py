@@ -47,11 +47,11 @@ class Login(Resource):
         if user:
             if bcrypt.checkpw(password.encode('utf-8'), user[0]['password'].encode('utf-8')):
                 access_token = create_access_token(identity=username)
-                return {"message": "Login succeeded!", "access_token": access_token}, 200
+                return {"message": "Login successful!", "color": "success", "access_token": access_token}, 202
             else:
-                return {"message": "Invalid credentials"}, 401
+                return {"message": "Invalid credentials", "color": "error"}, 200
         else:
-            return {"message": "User does not exist"}, 400
+            return {"message": "User does not exist", "color": "error"}, 200
 
 class Protected(Resource):
     @jwt_required()
