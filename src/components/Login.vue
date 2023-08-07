@@ -12,13 +12,13 @@
                     </v-col>
                 </v-row>
                 <HelloWorld @changeStatus="loginButtonStatus"/> <!-- the child event is captured here -->
-                <v-btn 
-                    :disabled="!validLogin" 
-                    color="primary" 
-                    @click="login"
-                    title="With great power comes great responsibility">
-                    Login
-                </v-btn>
+                <v-tooltip text="With great power comes great responsibility" location="bottom">
+                    <template v-slot:activator="{ props }">
+                        <v-btn v-bind="props" :disabled="!validLogin" color="primary" @click="login">
+                            Login
+                        </v-btn>
+                    </template>
+                </v-tooltip>
                 <v-dialog transition="dialog-top-transition" width="40%">
                     <template v-slot:activator="{ props }">
                     <a v-bind="props" style="margin-left: 5%; cursor: pointer; color: purple;">
