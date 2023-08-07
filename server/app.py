@@ -53,14 +53,14 @@ class Login(Resource):
         else:
             return {"message": "User does not exist", "color": "error"}, 200
 
-class Protected(Resource):
+class Data(Resource):
     @jwt_required()
     def get(self):
         return {"message": "You are authorized!"}, 200
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
-api.add_resource(Protected, '/protected')
+api.add_resource(Data, '/getdata')
 
 if __name__ == '__main__':
     app.run(debug=True)

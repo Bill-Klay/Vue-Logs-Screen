@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'Root',
-    component: () => import('@/components/Home.vue'),
+    component: () => import('@/views/Home.vue'), // this form of import is lazily loaded
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem('token')) {
         next(); // Allow access to the route
@@ -20,7 +20,7 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: () => import('@/components/Home.vue'),
+    component: () => import('@/views/Home.vue'),
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem('token')) {
         next();
@@ -40,6 +40,15 @@ const routes = [
       if (localStorage.getItem('token')) next('/home');
       else next();
     }   
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue')
+  },
+  {
+    path: '/:pathMatch(.*)',
+    redirect: '/404'  
   }
 ]
 
