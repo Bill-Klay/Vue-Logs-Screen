@@ -1,8 +1,7 @@
 <template>
-    <v-container>
-        <v-row class="mt-5 mb-16">
-            <v-col></v-col>
-            <v-col>
+    <v-container fluid filll-height>
+        <v-row class="mt-16" align="center" justify="center">
+            <v-col cols="12" sm="6" md="4">
                 <v-row>
                     <v-col cols="4">
                         <img src="..\assets\Pandas_Black.png" style="max-width: 100%; max-height: 100%; margin-top: 20px;"/>
@@ -54,7 +53,6 @@
                     </template>
                 </v-snackbar>
             </v-col>
-            <v-col></v-col>
         </v-row>
         <v-row justify="center" v-if="false">
             <v-col cols="8">
