@@ -20,11 +20,11 @@
         </v-app-bar>
   
         <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-            <v-row>
+            <v-row class="mt-2">
                 <v-col cols="1"></v-col>
                 <v-col cols="4"> 
-                    <VueMultiselect v-model="value" :options="options" placeholder="Select Server" label="name" track-by="name" class="mt-6"></VueMultiselect>
-                    <VueMultiselect v-model="value" :options="options" placeholder="Select Database" label="name" track-by="name" class="mt-6"></VueMultiselect>
+                    <VueMultiselect class="mt-6" v-model="serverName" :options="serverOptions" placeholder="Select Server" label="name" track-by="name" @select="fetchDatabases" ></VueMultiselect>
+                    <VueMultiselect class="mt-6" v-model="databaseName" :options="databaseOptions" placeholder="Select Database" ></VueMultiselect>
                 </v-col>
                 <v-col cols="5"></v-col>
                 <v-col class="text-center mt-5 mr-1">
@@ -55,6 +55,7 @@
 
 <script>
     import VueMultiselect from 'vue-multiselect'
+    import axios from 'axios'
 
     export default {
         name: 'Home',
@@ -63,18 +64,20 @@
         },
         data() {
             return {
-                value: { name: 'Vue.js', language: 'JavaScript' },
-                options: [
-                    { name: 'Vue.js', language: 'JavaScript' },
-                    { name: 'Rails', language: 'Ruby' },
-                    { name: 'Sinatra', language: 'Ruby' },
-                    { name: 'Laravel', language: 'PHP' },
-                    { name: 'Phoenix', language: 'Elixir' }
+                serverOptions: [ 
+                    { name: 'DEV', ip: '10.0.100.173' },
+                    { name: 'QA', ip: '10.0.100.175' },
+                    { name: 'STAGE', ip: '52.88.29.244' },
+                    { name: 'PROD', ip: '44.229.141.215' }
                 ],
+                serverName: null,
+                databaseOptions: [],
+                databaseName: null,
                 drawer: false,
                 snackMessage: '',
                 snackColor: '',
                 snackExecution: false,
+                backend: 'http://127.0.0.1:5000'
             }
         },
         methods: {
@@ -86,7 +89,19 @@
             logout() {
                 localStorage.removeItem('token')
                 this.$router.push('/login')
-            }
+            },
+            fetchDatabases() {
+                const token = localStorage.getItem('token') // replace 'token' with your actual key
+                axios.get(this.backend + '/server?server=' + this.serverName.ip, {
+                    headers: {
+                    'Authorization': `Bearer ${token}`
+                    }
+                }).then(response => {
+                    this.databaseOptions = Object.values(JSON.parse(response.data))
+                }).catch(error => {
+                    console.error(error)
+                })
+            },
         }
     }
 </script>
