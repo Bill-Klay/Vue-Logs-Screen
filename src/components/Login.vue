@@ -41,7 +41,7 @@
                         </v-card>
                     </template>
                 </v-dialog>
-                <v-snackbar v-model="snackExecution" :timeout="3000" :color="snackColor" variant="outlined">
+                <v-snackbar v-model="snackExecution" :timeout="3000" :color="snackColor" variant="tonal">
                     {{ snackMessage }}
                     <template v-slot:actions>
                         <v-btn
