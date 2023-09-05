@@ -1,4 +1,5 @@
 <template>
+    <!-- application wireframe drawer navigation -->
     <v-layout class="rounded rounded-md">
         <v-navigation-drawer v-model="drawer">
             <v-list>
@@ -11,29 +12,51 @@
             </v-list-item>
             </v-list>
         </v-navigation-drawer>
-  
+        
+        <!-- app bar -->
         <v-app-bar title="Compliance Monitoring" color="teal-darken-4" image="https://picsum.photos/1920/1080?random" scroll-behavior="fade-image" scroll-threshold="500">
             <template v-slot:image>
                 <v-img gradient="to top right, rgba(19,84,122,.8), rgba(128,208,199,.8)"></v-img>
             </template>
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         </v-app-bar>
-  
-        <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-            <v-row class="mt-2">
-                <v-col cols="1"></v-col>
+         
+        <!-- main card for the home page displaying all the tables and selections  -->
+        <v-main class="align-center justify-center">
+            <v-row class="ma-6">
                 <v-col cols="4"> 
                     <VueMultiselect class="mt-6" v-model="serverName" :options="serverOptions" placeholder="Select Server" label="name" track-by="name" @select="fetchDatabases" ></VueMultiselect>
                     <VueMultiselect class="mt-6" v-model="databaseName" :options="databaseOptions" placeholder="Select Database" ></VueMultiselect>
+                    <v-row justify="space-between" class="mt-6">
+                        <v-col cols="4">
+                            <v-btn color="success" elevation="5" block>Fetch Data</v-btn>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-btn color="primary" elevation="5" block>Commit Change</v-btn>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-btn color="warning" elevation="5" block>Execute Job</v-btn>
+                        </v-col>
+                    </v-row>
                 </v-col>
-                <v-col cols="5"></v-col>
-                <v-col class="text-center mt-5 mr-1">
+                <v-col cols="6">
+                    <!-- <v-img  :width="400" aspect-ratio="4/3" cover src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-img> -->
+                </v-col>
+                <v-col class="text-right">
                     <img src="..\assets\Pandas_Black.png" style="max-width: 85%; max-height: 85%;"/>
+                    <v-row class="mt-6">
+                        <v-btn class="white--text" color="#8B008B"  variant="outlined" block>Reset Workbench</v-btn>
+                    </v-row>
+                    <v-row class="mt-6">
+                        <v-btn class="white--text" color="#8B008B" variant="outlined" block>Reset Defer</v-btn>
+                    </v-row>
                 </v-col>
             </v-row>
+            
         </v-main>
 
-        <v-snackbar v-model="snackExecution" :timeout="5000" :color="snackColor" variant="outlined">
+        <!-- snack bars for the home page -->
+        <v-snackbar v-model="snackExecution" :timeout="5000" :color="snackColor" variant="tonal">
             {{ snackMessage }}
             <template v-slot:actions>
                 <v-btn
