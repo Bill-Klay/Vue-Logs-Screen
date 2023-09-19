@@ -42,8 +42,9 @@
                 <v-col cols="6">
                     <!-- <v-img  :width="400" aspect-ratio="4/3" cover src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-img> -->
                 </v-col>
-                <v-col class="text-right">
-                    <img src="..\assets\Pandas_Black.png" style="max-width: 85%; max-height: 85%;"/>
+                <v-col cols="2">
+                    <v-img src="..\assets\Pandas_Black.png" style="max-width: 85%; max-height: 85%;" container/>
+                    <!-- <v-img src="../assets/Pandas_Black.png" aspect-ratio="1" contain></v-img> -->
                     <v-row class="mt-6">
                         <v-btn class="white--text" color="#8B008B"  variant="outlined" block>Reset Workbench</v-btn>
                     </v-row>
