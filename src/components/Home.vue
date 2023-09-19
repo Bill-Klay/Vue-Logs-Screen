@@ -29,13 +29,13 @@
                     <VueMultiselect class="mt-6" v-model="databaseName" :options="databaseOptions" placeholder="Select Database" ></VueMultiselect>
                     <v-row justify="space-between" class="mt-6">
                         <v-col cols="4">
-                            <v-btn color="success" elevation="5" block>Fetch Data</v-btn>
+                            <v-btn color="success" elevation="5" @click="getData" block>Fetch Data</v-btn>
                         </v-col>
                         <v-col cols="4">
-                            <v-btn color="primary" elevation="5" block>Commit Change</v-btn>
+                            <v-btn color="primary" elevation="5" @click="commitChanges" block>Commit Change</v-btn>
                         </v-col>
                         <v-col cols="4">
-                            <v-btn color="warning" elevation="5" block>Execute Job</v-btn>
+                            <v-btn color="warning" elevation="5" @click="executeJob" block>Execute Job</v-btn>
                         </v-col>
                     </v-row>
                 </v-col>
@@ -63,15 +63,21 @@
                 <v-btn
                     :color="snackColor"
                     variant="text"
-                    @click="logout">
+                    v-if="isLogout" @click="logout">
                     Yes
+                </v-btn>                
+                <v-btn
+                    :color="snackColor"
+                    variant="text"
+                    v-if="isLogout" @click="snackExecution = false">
+                    No
                 </v-btn>
                 <v-btn
                     :color="snackColor"
                     variant="text"
-                    @click="snackExecution = false">
-                    No
-                </v-btn>
+                    v-else @click="closeSnack">
+                    Okay
+                </v-btn>  
             </template>
         </v-snackbar>
     </v-layout>
@@ -101,11 +107,13 @@
                 snackMessage: '',
                 snackColor: '',
                 snackExecution: false,
-                backend: 'http://127.0.0.1:5000'
+                backend: 'http://127.0.0.1:5000',
+                isLogout: false
             }
         },
         methods: {
             confirmLogout() {
+                this.isLogout = true
                 this.snackMessage = 'Do you want to logout?'
                 this.snackColor = 'warning'
                 this.snackExecution = true
@@ -114,18 +122,56 @@
                 localStorage.removeItem('token')
                 this.$router.push('/login')
             },
+            closeSnack() {
+                this.snackExecution = false
+            },
             fetchDatabases() {
                 const token = localStorage.getItem('token') // replace 'token' with your actual key
+                if (!token) {
+                console.error('Token is not set in local storage');
+                return;
+                }
+
+                if (!this.serverName || !this.serverName.ip) {
+                console.error('Server name or IP is not set');
+                return;
+                }
+
                 axios.get(this.backend + '/server?server=' + this.serverName.ip, {
                     headers: {
                     'Authorization': `Bearer ${token}`
                     }
                 }).then(response => {
                     this.databaseOptions = Object.values(JSON.parse(response.data))
+                    console.log(this.databaseOptions)
                 }).catch(error => {
                     console.error(error)
                 })
             },
+            verifyDataFields() {
+                if (!this.serverName || !this.databaseName) {
+                    this.snackMessage = 'Select Database and Server'
+                    this.snackColor = 'warning'
+                    this.snackExecution = true
+                    return false
+                }
+                else return true
+            },
+            getData() {
+                if (this.verifyDataFields()) {
+                    console.log("Data will be fetched here")
+                }
+            },
+            commitChanges() {
+                if (this.verifyDataFields()) {
+                    console.log("Changes will be comitted")
+                }
+            },
+            executeJob() {
+                if (this.verifyDataFields()) {
+                    console.log("Job will be executed")
+                }
+            }
         }
     }
 </script>
