@@ -60,12 +60,12 @@ class Login(Resource):
 
 class Database(Resource):
     @jwt_required()
-    def get(self):
+    def post(self):
         # global server, engine, database
-        # database = request.args.get('db')  # whilst here the parameters are not in JSON hence need to be jsonified before being returned
+        # database = request.args.get('db')  # whilst here the parameters are not in JSON hence need to be jsonified before being retrieved from vue
         global database
         parser = reqparse.RequestParser()
-        parser.add_argument('db', type=str, required=True, help='Database name is required', location='url') # also has a default parameter
+        parser.add_argument('db', type=str, required=True, help='Database name is required') # also has a default parameter
         args = parser.parse_args()
         database = args['db']
         engine = create_engine('mssql+pyodbc://'+server+'/'+database+'?driver=SQL+Server+Native+Client+11.0')

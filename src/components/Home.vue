@@ -26,7 +26,7 @@
             <v-row class="ma-6">
                 <v-col cols="4"> 
                     <VueMultiselect class="mt-6" v-model="serverName" :options="serverOptions" placeholder="Select Server" label="name" track-by="name" @select="fetchDatabases" ></VueMultiselect>
-                    <VueMultiselect class="mt-6" v-model="databaseName" :options="databaseOptions" placeholder="Select Database" ></VueMultiselect>
+                    <VueMultiselect class="mt-6" v-model="databaseName" :options="databaseOptions" placeholder="Select Database" @select="databaseConnection" ></VueMultiselect>
                     <v-row justify="space-between" class="mt-6">
                         <v-col cols="4">
                             <v-btn color="success" elevation="5" @click="getData" block>Fetch Data</v-btn>
@@ -125,16 +125,35 @@
             closeSnack() {
                 this.snackExecution = false
             },
+            databaseConnection() {
+                const token = localStorage.getItem('token')
+                console.log(this.databaseName)
+                if (!token) {
+                    console.error('Token is not set in local storage');
+                    return;
+                }
+                axios.post(this.backend + '/database', { db: this.databaseName }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(response => {
+                    this.snackMessage = response.data.message
+                    this.snackColor = response.data.color
+                    this.snackExecution = true
+                }).catch(error => {
+                    console.log("Invalid request", error)
+                })
+            },
             fetchDatabases() {
                 const token = localStorage.getItem('token') // replace 'token' with your actual key
                 if (!token) {
-                console.error('Token is not set in local storage');
-                return;
+                    console.error('Token is not set in local storage');
+                    return;
                 }
 
                 if (!this.serverName || !this.serverName.ip) {
-                console.error('Server name or IP is not set');
-                return;
+                    console.error('Server name or IP is not set');
+                    return;
                 }
 
                 axios.get(this.backend + '/server?server=' + this.serverName.ip, {
