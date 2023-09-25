@@ -41,6 +41,25 @@
                 </v-col>
                 <v-col cols="6">
                     <!-- <v-img  :width="400" aspect-ratio="4/3" cover src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-img> -->
+                    <v-table density="compact" class="pl-12 pr-12">
+                        <thead>
+                        <tr>
+                            <th class="text-left">
+                            Table Name
+                            </th>
+                            <th class="text-left">
+                            Count
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr
+                            v-for="item in dataCountItems" :key="item.key">
+                            <td>{{ item.key }}</td>
+                            <td>{{ item.value }}</td>
+                        </tr>
+                        </tbody>
+                    </v-table>
                 </v-col>
                 <v-col cols="2">
                     <v-img src="..\assets\Pandas_Black.png" style="max-width: 85%; max-height: 85%;" container/>
@@ -53,7 +72,6 @@
                     </v-row>
                 </v-col>
             </v-row>
-            
         </v-main>
 
         <!-- snack bars for the home page -->
@@ -108,7 +126,9 @@
                 snackColor: '',
                 snackExecution: false,
                 backend: 'http://127.0.0.1:5000',
-                isLogout: false
+                isLogout: false,
+                dataCountHeader: ['Key', 'Value'],
+                dataCountItems: []
             }
         },
         methods: {
@@ -127,12 +147,8 @@
             },
             databaseConnection() {
                 const token = localStorage.getItem('token')
-                console.log(this.databaseName)
-                if (!token) {
-                    console.error('Token is not set in local storage');
-                    return;
-                }
-                axios.post(this.backend + '/database', { db: this.databaseName }, {
+                if (!token) this.$router.push('/login')
+                axios.put(this.backend + '/database', { db: this.databaseName }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -146,13 +162,10 @@
             },
             fetchDatabases() {
                 const token = localStorage.getItem('token') // replace 'token' with your actual key
-                if (!token) {
-                    console.error('Token is not set in local storage');
-                    return;
-                }
+                if (!token) this.$router.push('/login')
 
                 if (!this.serverName || !this.serverName.ip) {
-                    console.error('Server name or IP is not set');
+                    console.error('Server name or IP is not set')
                     return;
                 }
 
@@ -162,7 +175,6 @@
                     }
                 }).then(response => {
                     this.databaseOptions = Object.values(JSON.parse(response.data))
-                    console.log(this.databaseOptions)
                 }).catch(error => {
                     console.error(error)
                 })
@@ -178,7 +190,18 @@
             },
             getData() {
                 if (this.verifyDataFields()) {
-                    console.log("Data will be fetched here")
+                    const token = localStorage.getItem('token')
+                    if (!token) this.$router.push('/login')
+
+                    axios.get(this.backend + '/database', {
+                        headers: {
+                        'Authorization': `Bearer ${token}`
+                        }
+                    }).then(response => {
+                        this.dataCountItems = Object.entries(response.data).map(([key, value]) => ({ key, value }))
+                    }).catch(error => {
+                        console.error(error)
+                    })
                 }
             },
             commitChanges() {

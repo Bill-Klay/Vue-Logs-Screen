@@ -5,8 +5,10 @@ from tinydb import TinyDB, Query
 import bcrypt
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from sqlalchemy import create_engine, MetaData, Table, select
-from sqlalchemy.sql.expression import cast
+from sqlalchemy.sql import text
+from sqlalchemy.exc import OperationalError
 import pandas as pd
+import logging
 
 app = Flask(__name__)
 api = Api(app)
@@ -14,6 +16,11 @@ CORS(app)
 
 app.config['JWT_SECRET_KEY'] = 'this is a very strong secret key!'  # Change this!
 jwt = JWTManager(app)
+
+# Configure server logs
+file_handler = logging.FileHandler('server.log')
+app.logger.addHandler(file_handler)
+app.logger.setLevel(logging.INFO)  # Set the minimum log level to INFO
 
 # Initialize the TinyDB database
 # Global variables can be read anywhere without specifying, but need to declared within the function when writing to it
@@ -54,16 +61,18 @@ class Login(Resource):
                 access_token = create_access_token(identity=username)
                 return {"message": "Login successful!", "color": "success", "access_token": access_token}, 202
             else:
+                app.logger.warning('Invalid login attempt')
                 return {"message": "Invalid credentials", "color": "error"}, 200
         else:
+            app.logger.warning('Invalid login attempt')
             return {"message": "User does not exist", "color": "error"}, 200
 
 class Database(Resource):
     @jwt_required()
-    def post(self):
+    def put(self):
         # global server, engine, database
         # database = request.args.get('db')  # whilst here the parameters are not in JSON hence need to be jsonified before being retrieved from vue
-        global database
+        global database, engine
         parser = reqparse.RequestParser()
         parser.add_argument('db', type=str, required=True, help='Database name is required') # also has a default parameter
         args = parser.parse_args()
@@ -73,8 +82,34 @@ class Database(Resource):
             connection = engine.connect()
             connection.close()
             return {'message': 'Database connection successful', 'color': 'success'}, 200
-        except Exception as e:
+        except OperationalError as e:
+            app.logger.error('Error occurred: %s', e)
             return {'message': 'Database connection failed: ' + str(e), 'color': 'error'}, 500
+    
+    @jwt_required()
+    def get(self):
+        # Fetch table names matching 'validation'
+        global engine
+        query = text("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '%Validation'")
+        try:
+            with engine.connect() as connection:
+                result = connection.execute(query)
+                table_names = [row[0] for row in result]
+
+                # Get count of rows in each table and store results in a dictionary
+                data_counts = {}
+                for table in table_names:
+                    query = text(f'SELECT COUNT(*) AS [count] FROM {table}')
+                    result = connection.execute(query)
+                    count = [row[0] for row in result][0]
+                    data_counts[table] = count
+
+            return jsonify(data_counts)
+        except OperationalError as e:
+            app.logger.error('Error occurred: %s', e)
+            return {'message': 'Query execution failed: ' + str(e), 'color': 'error'}, 500
+
+
 
 class Data(Resource):
     @jwt_required()
@@ -125,11 +160,8 @@ class Server(Resource):
             data = pd.read_sql(query, engine)
             retMap = data['name'].to_json()
             return retMap
-        except Exception as Arg:
-            f = open("./server_logs.txt", "a")
-            # writing in the file
-            f.write(str(Arg))
-            f.close()
+        except OperationalError as e:
+            app.logger.error('Error occurred: %s', e)
             return Response(status=400)
 
 api.add_resource(Login, '/login')
