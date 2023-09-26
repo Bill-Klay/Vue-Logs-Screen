@@ -41,7 +41,7 @@
                 </v-col>
                 <v-col cols="6">
                     <!-- <v-img  :width="400" aspect-ratio="4/3" cover src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"></v-img> -->
-                    <v-table density="compact" class="pl-12 pr-12">
+                    <v-table density="compact" class="pl-12 pr-12" v-if="dataCountItems.length">
                         <thead>
                         <tr>
                             <th class="text-left">
@@ -127,7 +127,6 @@
                 snackExecution: false,
                 backend: 'http://127.0.0.1:5000',
                 isLogout: false,
-                dataCountHeader: ['Key', 'Value'],
                 dataCountItems: []
             }
         },
@@ -199,6 +198,7 @@
                         }
                     }).then(response => {
                         this.dataCountItems = Object.entries(response.data).map(([key, value]) => ({ key, value }))
+                        this.loading = true
                     }).catch(error => {
                         console.error(error)
                     })
