@@ -5,6 +5,12 @@
             <v-list>
             <v-list-item title="Navigation drawer" class="text-center"></v-list-item>
             <v-list-item>
+                <v-btn block color="#5dbea3">Compliance Monitoring</v-btn>
+            </v-list-item>
+            <v-list-item>
+                <v-btn block color="#a881af" @click="powerBi" dark>Power BI</v-btn>
+            </v-list-item>
+            <v-list-item>
                 <v-btn disabled block>Expense Monitoring Audit</v-btn>
             </v-list-item>
             <v-list-item>
@@ -140,6 +146,9 @@
             logout() {
                 localStorage.removeItem('token')
                 this.$router.push('/login')
+            },
+            powerBi() {
+                this.$router.push('/powerBi')
             },
             closeSnack() {
                 this.snackExecution = false

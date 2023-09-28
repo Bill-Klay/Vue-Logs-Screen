@@ -42,6 +42,11 @@ const routes = [
     }   
   },
   {
+    path: '/powerbi',
+    name: 'PowerBI',
+    component: () => import('@/views/PowerBI.vue')
+  },
+  {
     path: '/404',
     name: 'NotFound',
     component: () => import('@/views/NotFound.vue')
