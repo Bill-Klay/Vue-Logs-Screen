@@ -8,7 +8,7 @@
                 <v-btn block color="#5dbea3" @click="compliance">Compliance Monitoring</v-btn>
             </v-list-item>
             <v-list-item>
-                <v-btn block color="#a881af" dark active>Power BI</v-btn>
+                <v-btn block color="#a881af" active>Power BI</v-btn>
             </v-list-item>
             <v-list-item>
                 <v-btn disabled block>Expense Monitoring Audit</v-btn>
@@ -28,10 +28,9 @@
         </v-app-bar>
          
         <!-- main card for the home page displaying all the tables and selections  -->
-        <v-main class="align-center justify-center" >
-            <!-- <iframe title="HR_Leave_Analyses_QandA" width="100%" height="100%" src="https://app.powerbi.com/reportEmbed?reportId=2e5b63a0-5664-4674-8f83-269b22ce53ee&autoAuth=true&ctid=026e0585-0f6d-4eb2-ba93-8c4a4d4883c4" frameborder="0" allowFullScreen="true"></iframe> -->
-            <PowerBIQnaEmbed style="width:100vw; height:90vh;" :embedConfig="embedConfig" :eventHandlers="eventHandlersMap" ref="qnaEmbed"></PowerBIQnaEmbed>
-            <v-btn @click="getQuestion">Get Question</v-btn>
+        <v-main class="align-center justify-center" id="myPowerbi">
+            <!-- <iframe title="IndustryData_Analyses_QandA" width="100%" height="100%" src="https://app.powerbi.com/reportEmbed?reportId=c9cdae98-7661-4669-8f84-2beedf742acc&autoAuth=true&ctid=026e0585-0f6d-4eb2-ba93-8c4a4d4883c4" frameborder="0" allowFullScreen="true"></iframe> -->
+            <PowerBIQnaEmbed style="width:100vw; height:90vh;" :embedConfig="embedConfig" ref="qnaEmbed"></PowerBIQnaEmbed>
         </v-main>
 
         <!-- snack bars for the home page -->
@@ -64,7 +63,6 @@
 <script>
     import { PowerBIQnaEmbed } from 'powerbi-client-vue-js';
     import { models } from 'powerbi-client';
-    // import { saveAs } from 'file-saver';
 
     export default {
         name: 'PowerBI',
@@ -75,10 +73,10 @@
             return {
                 embedConfig: {
                     type: "report",
-                    id: "2e5b63a0-5664-4674-8f83-269b22ce53ee",
-                    embedUrl: "https://app.powerbi.com/reportEmbed?reportId=2e5b63a0-5664-4674-8f83-269b22ce53ee&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVVTLU5PUlRILUNFTlRSQUwtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7InVzYWdlTWV0cmljc1ZOZXh0Ijp0cnVlfX0%3d",
-                    accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyIsImtpZCI6Ii1LSTNROW5OUjdiUm9meG1lWm9YcWJIWkdldyJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMDI2ZTA1ODUtMGY2ZC00ZWIyLWJhOTMtOGM0YTRkNDg4M2M0LyIsImlhdCI6MTY5NTg4NTgxNCwibmJmIjoxNjk1ODg1ODE0LCJleHAiOjE2OTU4OTEzNjYsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84VUFBQUFGYVkyTlR3V1dwOHkxWEFtWGJENm5rWnRKT1JCODZYQm5NeW5Pa0ZiekxwQ0YxUVlPOG1leEZNb2NjV25WaHRMQjRtRHZ4eHJkbVBKQzR5cUlFRSs4WHdwS3JCaTlLeWVueE9jaXNLUFBWOD0iLCJhbXIiOlsicHdkIiwicnNhIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIwIiwiZGV2aWNlaWQiOiI1N2Y1MzlkMC1jYWZkLTRjNmEtYTFiOC1mYmQ1MGFjYTk5ZDAiLCJmYW1pbHlfbmFtZSI6IktoYW4iLCJnaXZlbl9uYW1lIjoiTXVoYW1tYWQgQmlsYWwiLCJpcGFkZHIiOiIxMTcuMjAuMTYuMjAiLCJuYW1lIjoiTXVoYW1tYWQgQmlsYWwgS2hhbiIsIm9pZCI6IjIyMjBiYWE5LTlkZTctNGUxZC04ZWJhLWYzZDZlNzM0MDExZCIsInB1aWQiOiIxMDAzMjAwMEYwNzZBNTY4IiwicmgiOiIwLkFYY0FoUVZ1QW0wUHNrNjZrNHhLVFVpRHhBa0FBQUFBQUFBQXdBQUFBQUFBQUFCM0FKby4iLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzaWduaW5fc3RhdGUiOlsiaW5rbm93bm50d2siLCJrbXNpIl0sInN1YiI6Im4wWjFzM0VfY0Y0TjZTZUpkdUNIMVdtS2lHN2Z5MWlFaVlYWml2OThlc2ciLCJ0aWQiOiIwMjZlMDU4NS0wZjZkLTRlYjItYmE5My04YzRhNGQ0ODgzYzQiLCJ1bmlxdWVfbmFtZSI6ImJpbGFsLmtoYW5AcW9yZGF0YS5jb20iLCJ1cG4iOiJiaWxhbC5raGFuQHFvcmRhdGEuY29tIiwidXRpIjoiR0dGLWNjTVlsRUtPNTllZE5RSldBQSIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.dVWZ4cKYw89yg_kyLWf8FzK0PwGrE4BosW8x4w2HY1Z_WseeeOChz3Mhs96IzoEOBycoJIzzWjuryKgB6b80BlQcW0Gn85de-Qxhvy1k_FiNRumuwwIias4oUQucYzgNiwHWJBnJoRX4YAodKEiNFgWT8z1S1rBl4gSRM2tKE4WEVxI42uXj6863MtAnxsxlYJ4xSXK8qloK808_mrZE-pRz7pZUlTuP7S09E-TY65DsZ7-eXYryeNGAL0OV9u3brajj74y717GRkbqyJvbUP9xqN0WX0ehjnZeKUjpMXjlgEl5TwHTeLBGOP7uZ3slTPLziILpqYkcfe18UpjlmWw",
-                    datasetIds: ["cb638450-1d08-4124-9d71-b6068ad37f54"],
+                    id: "c9cdae98-7661-4669-8f84-2beedf742acc",
+                    embedUrl: "https://app.powerbi.com/reportEmbed?reportId=c9cdae98-7661-4669-8f84-2beedf742acc&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVVTLU5PUlRILUNFTlRSQUwtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7InVzYWdlTWV0cmljc1ZOZXh0Ijp0cnVlfX0%3d",
+                    accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSIsImtpZCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMDI2ZTA1ODUtMGY2ZC00ZWIyLWJhOTMtOGM0YTRkNDg4M2M0LyIsImlhdCI6MTY5NzY5OTA5MCwibmJmIjoxNjk3Njk5MDkwLCJleHAiOjE2OTc3MDM5MDAsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84VUFBQUFwSGo4dVBFVXJLVXRlbnpNMlc4WlZ5cGdaNlVtZFlqS2V6TWRqZ0Vrd3N1dGVKU2dreCszUWp1NVg2TVBEdGdETlVwUkVaRTYrZHZ2NlJ3cVljMkxmOHpmQklGM3RIZlpobitEczRnbjFZUT0iLCJhbXIiOlsicHdkIiwicnNhIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIwIiwiZGV2aWNlaWQiOiI1N2Y1MzlkMC1jYWZkLTRjNmEtYTFiOC1mYmQ1MGFjYTk5ZDAiLCJmYW1pbHlfbmFtZSI6IktoYW4iLCJnaXZlbl9uYW1lIjoiTXVoYW1tYWQgQmlsYWwiLCJpcGFkZHIiOiIxMDMuNy42MC43NiIsIm5hbWUiOiJNdWhhbW1hZCBCaWxhbCBLaGFuIiwib2lkIjoiMjIyMGJhYTktOWRlNy00ZTFkLThlYmEtZjNkNmU3MzQwMTFkIiwicHVpZCI6IjEwMDMyMDAwRjA3NkE1NjgiLCJyaCI6IjAuQVhjQWhRVnVBbTBQc2s2Nms0eEtUVWlEeEFrQUFBQUFBQUFBd0FBQUFBQUFBQUIzQUpvLiIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiIsInNpZ25pbl9zdGF0ZSI6WyJrbXNpIl0sInN1YiI6Im4wWjFzM0VfY0Y0TjZTZUpkdUNIMVdtS2lHN2Z5MWlFaVlYWml2OThlc2ciLCJ0aWQiOiIwMjZlMDU4NS0wZjZkLTRlYjItYmE5My04YzRhNGQ0ODgzYzQiLCJ1bmlxdWVfbmFtZSI6ImJpbGFsLmtoYW5AcW9yZGF0YS5jb20iLCJ1cG4iOiJiaWxhbC5raGFuQHFvcmRhdGEuY29tIiwidXRpIjoicmV5Szk4Ulg5MDZoM0JsZFhnNEFBQSIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.TAaR1wqzOiyhcRgMRdFzM9CM57f4dH1PwLwk00TPkdV65TPSCo-36v_wk_T-B5mRkB6N1Tvonps2NlMl0vEoWKITyfspySyOGlzBHRUsorYNbca_BlAHXWSEYXQX4KVwgNKiC1Y9K4gX9sn1E9-0ZzpbowEM0EMpv4Xh1_b18UYO4LVZrQGedhwe6D9KiTR5VfzYEwYyHuLFhJp8l_rfWSevwLWgAbhGWbyviJmtlySKgyZkFGuZXl6xbLnvCwSi53MalaV8sDeRX52Zjh8OcQnVYa-lASPmnHGdKDKBfAM8ofayb1r8yqUyHnkHiTfUOeDmYkwpXARiZScR8gpyug",
+                    datasetIds: ["e2343861-7dde-4f5a-a024-a79a613589d2"],
                     tokenType: models.TokenType.Aad,
                     // hostname: "https://app.powerbi.com",
                     viewMode: models.QnaMode.Interactive,
@@ -89,32 +87,19 @@
                                 visible: false
                             }
                         },
-                        background: models.BackgroundType.Transparent,
-                        filterPaneEnabled: false,
+                        // background: models.BackgroundType.Transparent,
+                        filterPaneEnabled: true,
                         navContentPaneEnabled: false,
-                        visualRenderedEvents: true // Because visuals might render due to user interactions, it's recommended that this event only be turned on when needed.
+                        visualRenderedEvents: false // Because visuals might render due to user interactions, it's recommended that this event only be turned on when needed.
                     }
                 },
-                eventHandlersMap: new Map([
-                    ['loaded', () => console.log('Report has loaded')],
-                    ['rendered', () => console.log('Report has rendered')],
-                    ['error', () => console.log('Report has rendered')],
-                    // ['visualClicked', () => console.log('visual clicked')],
-                    // ['pageChanged', () => console.log('Page change')],
-                    ['visualRendered', async () => {
-                        let qnaContainer = this.$refs.qnaEmbed
-                        this.report = await qnaContainer.getQna()
-                        let activePage = await this.report.getActivePage();
-                        let visuals = await activePage.getVisuals();
-                        console.log(visuals)
-                    }]
-                ]),
                 drawer: false,
                 snackMessage: '',
                 snackColor: '',
                 snackExecution: false,
                 isLogout: false,
                 report: null,
+                backend: 'http://127.0.0.1:5000',
             }
         },
         methods: {
@@ -133,31 +118,6 @@
             },
             compliance() {
                 this.$router.push('/home')
-            },
-            setReportObj(value) {
-                console.log("Report value ", value)
-                this.report = value;
-            },
-            async onVisualRendered() {
-                let qnaContainer = this.$refs.getQna
-                this.report = await qnaContainer.getQna()
-                let activePage = await this.report.getActivePage();
-                let visuals = await activePage.getVisuals();
-                
-                // Export each visual as an image.
-                for (let visual of visuals) {
-                    let result =  visual.exportData(models.ExportDataType.Image);
-                    let imageUrl = result.exportedFile.url;
-                    console.log(imageUrl);
-                    let fileName = 'visual_' + visual.name + '.png';
-                    saveAs(imageUrl, fileName);
-                }
-            },
-            getQuestion() {
-                const qnaEmbed = this.$refs.qnaEmbed;
-                qnaEmbed.getQuestion().then(question => {
-                console.log(question);
-                });
             }
         }
     }

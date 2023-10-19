@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, Response, jsonify, send_file
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from tinydb import TinyDB, Query
@@ -9,6 +9,7 @@ from sqlalchemy.sql import text
 from sqlalchemy.exc import OperationalError
 import pandas as pd
 import logging
+import subprocess
 
 app = Flask(__name__)
 api = Api(app)
@@ -164,11 +165,20 @@ class Server(Resource):
             app.logger.error('Error occurred: %s', e)
             return Response(status=400)
 
+class PowerBI(Resource):
+    def get(self):
+        # Run the Node.js script
+        subprocess.run(['node', 'D:\Compliance Monitoring\Logs-Screen\src\captureScreenshot.js'], check=True)
+
+        # Send the screenshot as a response
+        return send_file('visual.png', mimetype='image/png')
+
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(Data, '/getdata')
 api.add_resource(Server, '/server')
 api.add_resource(Database, '/database')
+api.add_resource(PowerBI, '/powerbi')
 
 if __name__ == '__main__':
     app.run(debug=True)
