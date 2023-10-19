@@ -34,29 +34,34 @@
         <v-main class="align-center justify-center">
             <!-- <iframe title="IndustryData_Analyses_QandA" width="100%" height="100%" src="https://app.powerbi.com/reportEmbed?reportId=c9cdae98-7661-4669-8f84-2beedf742acc&autoAuth=true&ctid=026e0585-0f6d-4eb2-ba93-8c4a4d4883c4" frameborder="0" allowFullScreen="true"></iframe> -->
             <PowerBIQnaEmbed style="width:100vw; height:90vh;" :embedConfig="embedConfig" ref="qnaEmbed" v-if="toggleValue == 'Power BI'"></PowerBIQnaEmbed>
-            <v-row class="ma-6" v-else>
-                <v-col cols="3"></v-col>
-                <v-col>
-                    <v-file-input v-model="file" color="deep-purple-accent-4" label="Upload File" prepend-icon="mdi-paperclip" variant="outlined" accept=".xls,.xlsx,.csv" show-size></v-file-input>
-                </v-col>
-                <v-col cols="3"></v-col>
-            </v-row>
-            <v-row class="ma-6" :justify="message.speaker ? 'start' : 'end'"
-            v-for="message in messages"
-            :key="message.id">
-                <v-card>
-                    <v-card-text>
-                        {{ message.text }}
-                    </v-card-text>
-                </v-card>
-            </v-row>
-            <v-row class="ma-6">
-                <v-col cols="2"></v-col>
-                <v-col>
-                    <v-text-field v-model="newMessage" @keyup.enter="sendMessage(true)" label="Enter your query..." hint="For example: get the highest amount spent"></v-text-field>
-                </v-col>
-                <v-col cols="2"></v-col>
-            </v-row>
+            <template v-else>
+                <v-row class="ma-6">
+                    <v-col cols="3"></v-col>
+                    <v-col>
+                        <v-file-input v-model="file" color="deep-purple-accent-4" label="Upload File" prepend-icon="mdi-paperclip" variant="outlined" accept=".xls,.xlsx,.csv" show-size></v-file-input>
+                    </v-col>
+                    <v-col cols="3"></v-col>
+                </v-row>
+                <v-row class="ma-6" :justify="message.speaker ? 'start' : 'end'"
+                v-for="message in messages" :key="message.id">
+                    <v-card>
+                        <v-card-text v-if="isSingleValue(message.text)">
+                            {{ message.text }}
+                        </v-card-text>
+                        <v-card-text v-else>
+                            <v-data-table :headers="headers" :items="items"></v-data-table>
+                            <!-- Should be a data table here -->
+                        </v-card-text>
+                    </v-card>
+                </v-row>
+                <v-row class="ma-6">
+                    <v-col cols="2"></v-col>
+                    <v-col>
+                        <v-text-field v-model="newMessage" @keyup.enter="sendMessage(true)" label="Enter your query..." hint="For example: What is the total count?"></v-text-field>
+                    </v-col>
+                    <v-col cols="2"></v-col>
+                </v-row>
+            </template>
         </v-main>
 
         <!-- snack bars for the home page -->
@@ -89,7 +94,7 @@
 <script>
     import { PowerBIQnaEmbed } from 'powerbi-client-vue-js';
     import { models } from 'powerbi-client';
-import axios from 'axios';
+    import axios from 'axios';
 
     export default {
         name: 'PowerBI',
@@ -134,7 +139,9 @@ import axios from 'axios';
                     { id: 2, text: 'Hello from the other side!', speaker: false},
                     { id: 3, text: 'Please start a conversation.', speaker: true}
                 ],
-                newMessage: ''
+                newMessage: '',
+                headers: [],
+                items: []
             }
         },
         methods: {
@@ -154,14 +161,7 @@ import axios from 'axios';
             compliance() {
                 this.$router.push('/home')
             },
-            receiveMessage(msg) {
-                this.messages.push({
-                    id: this.messages.length + 1,
-                    text: msg,
-                    speaker: 0
-                })
-            },
-            async sendMessage() {
+            sendMessage() {
                 if (this.newMessage.trim() !== '') {
                     this.messages.push({
                         id: this.messages.length + 1,
@@ -169,11 +169,32 @@ import axios from 'axios';
                         speaker: 1
                     })
                     axios.post(this.backend + '/powerbi', { prompt: this.newMessage }).then(response => {
-                        this.receiveMessage(response.data)
+                        this.messages.push({
+                            id: this.messages.length + 1,
+                            text: response.data,
+                            speaker: 0
+                        })
+                        if(typeof response.data === 'object' || Array.isArray(response.data)) {
+                            console.log('Object detected')
+                            this.headers = Object.keys(response.data[0]).map(key => ({ text: key, value: key }));
+                            this.items = response.data;
+                        }
                     }).catch(error => {
                         console.log("Invalid request", error)
                     })
                     this.newMessage = ''
+                }
+            },
+            isSingleValue(msg) {
+                console.log(this.messages)
+                console.log(msg)
+                if(typeof msg == 'string' || typeof msg == 'number') return true
+                else {
+                    // this.headers = Object.keys(msg[0]).map(key => ({ text: key, value: key }));
+                    // this.items = Object.values(msg)
+                    // console.log(this.headers)
+                    // console.log(this.items)
+                    return false
                 }
             }
         }

@@ -180,14 +180,12 @@ class PowerBI(Resource):
             llm = OpenAI(api_token="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")
             pandas_ai = PandasAI(llm)
             res = pandas_ai(df, prompt=args['prompt'])
-            res = pd.DataFrame(res, columns=res.columns)
-            print(res)
-            if isinstance(res, pd.DataFrame):
-                print("Yes, its a dataframe")
+            if isinstance(res, str) or isinstance(res, int):
+                data_json = res
+            else:
+                res = pd.DataFrame(res, columns=res.columns, index=res.index)
                 df_dict = res.to_dict(orient='records')
                 data_json = jsonify(df_dict)
-            else:
-                data_json = res
             return data_json
         except Exception as e:
             print("Error occurred: ", e)
