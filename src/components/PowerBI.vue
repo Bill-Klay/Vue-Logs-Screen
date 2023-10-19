@@ -16,6 +16,9 @@
             <v-list-item>
                 <v-btn color="error" @click="confirmLogout" block>Log Out</v-btn>
             </v-list-item>
+            <v-list-item>
+                <v-switch v-model="toggleValue" hide-details true-value="ChatGPT" false-value="Power BI" color="warning" :label="`${toggleValue}`" inset></v-switch>
+            </v-list-item>
             </v-list>
         </v-navigation-drawer>
         
@@ -28,9 +31,32 @@
         </v-app-bar>
          
         <!-- main card for the home page displaying all the tables and selections  -->
-        <v-main class="align-center justify-center" id="myPowerbi">
+        <v-main class="align-center justify-center">
             <!-- <iframe title="IndustryData_Analyses_QandA" width="100%" height="100%" src="https://app.powerbi.com/reportEmbed?reportId=c9cdae98-7661-4669-8f84-2beedf742acc&autoAuth=true&ctid=026e0585-0f6d-4eb2-ba93-8c4a4d4883c4" frameborder="0" allowFullScreen="true"></iframe> -->
-            <PowerBIQnaEmbed style="width:100vw; height:90vh;" :embedConfig="embedConfig" ref="qnaEmbed"></PowerBIQnaEmbed>
+            <PowerBIQnaEmbed style="width:100vw; height:90vh;" :embedConfig="embedConfig" ref="qnaEmbed" v-if="toggleValue == 'Power BI'"></PowerBIQnaEmbed>
+            <v-row class="ma-6" v-else>
+                <v-col cols="3"></v-col>
+                <v-col>
+                    <v-file-input v-model="file" color="deep-purple-accent-4" label="Upload File" prepend-icon="mdi-paperclip" variant="outlined" accept=".xls,.xlsx,.csv" show-size></v-file-input>
+                </v-col>
+                <v-col cols="3"></v-col>
+            </v-row>
+            <v-row class="ma-6" :justify="message.speaker ? 'start' : 'end'"
+            v-for="message in messages"
+            :key="message.id">
+                <v-card>
+                    <v-card-text>
+                        {{ message.text }}
+                    </v-card-text>
+                </v-card>
+            </v-row>
+            <v-row class="ma-6">
+                <v-col cols="2"></v-col>
+                <v-col>
+                    <v-text-field v-model="newMessage" @keyup.enter="sendMessage(true)" label="Enter your query..." hint="For example: get the highest amount spent"></v-text-field>
+                </v-col>
+                <v-col cols="2"></v-col>
+            </v-row>
         </v-main>
 
         <!-- snack bars for the home page -->
@@ -63,6 +89,7 @@
 <script>
     import { PowerBIQnaEmbed } from 'powerbi-client-vue-js';
     import { models } from 'powerbi-client';
+import axios from 'axios';
 
     export default {
         name: 'PowerBI',
@@ -100,6 +127,14 @@
                 isLogout: false,
                 report: null,
                 backend: 'http://127.0.0.1:5000',
+                toggleValue: 'Power BI',
+                file: null,
+                messages: [
+                    { id: 1, text: 'Hello!', speaker: true}, // 1 is the user 0 is the server
+                    { id: 2, text: 'Hello from the other side!', speaker: false},
+                    { id: 3, text: 'Please start a conversation.', speaker: true}
+                ],
+                newMessage: ''
             }
         },
         methods: {
@@ -118,6 +153,28 @@
             },
             compliance() {
                 this.$router.push('/home')
+            },
+            receiveMessage(msg) {
+                this.messages.push({
+                    id: this.messages.length + 1,
+                    text: msg,
+                    speaker: 0
+                })
+            },
+            async sendMessage() {
+                if (this.newMessage.trim() !== '') {
+                    this.messages.push({
+                        id: this.messages.length + 1,
+                        text: this.newMessage,
+                        speaker: 1
+                    })
+                    axios.post(this.backend + '/powerbi', { prompt: this.newMessage }).then(response => {
+                        this.receiveMessage(response.data)
+                    }).catch(error => {
+                        console.log("Invalid request", error)
+                    })
+                    this.newMessage = ''
+                }
             }
         }
     }

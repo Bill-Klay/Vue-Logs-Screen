@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, jsonify, send_file
+from flask import Flask, request, Response, jsonify
 from flask_cors import CORS
 from flask_restful import Resource, Api, reqparse
 from tinydb import TinyDB, Query
@@ -9,7 +9,8 @@ from sqlalchemy.sql import text
 from sqlalchemy.exc import OperationalError
 import pandas as pd
 import logging
-import subprocess
+from pandasai import PandasAI
+from pandasai.llm.openai import OpenAI
 
 app = Flask(__name__)
 api = Api(app)
@@ -166,12 +167,31 @@ class Server(Resource):
             return Response(status=400)
 
 class PowerBI(Resource):
-    def get(self):
-        # Run the Node.js script
-        subprocess.run(['node', 'D:\Compliance Monitoring\Logs-Screen\src\captureScreenshot.js'], check=True)
-
-        # Send the screenshot as a response
-        return send_file('visual.png', mimetype='image/png')
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('prompt', type=str, required=True, help='Prompt is required')
+        args = parser.parse_args()
+        try:
+            df = pd.read_excel("NBIX Qordata KRI.xlsx")
+        except ValueError:
+            print("Could not read file")
+            return Response(status=400)
+        try:
+            llm = OpenAI(api_token="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")
+            pandas_ai = PandasAI(llm)
+            res = pandas_ai(df, prompt=args['prompt'])
+            res = pd.DataFrame(res, columns=res.columns)
+            print(res)
+            if isinstance(res, pd.DataFrame):
+                print("Yes, its a dataframe")
+                df_dict = res.to_dict(orient='records')
+                data_json = jsonify(df_dict)
+            else:
+                data_json = res
+            return data_json
+        except Exception as e:
+            print("Error occurred: ", e)
+            return Response(status=400)
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
