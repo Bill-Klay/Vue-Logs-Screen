@@ -49,8 +49,7 @@
                             {{ message.text }}
                         </v-card-text>
                         <v-card-text v-else>
-                            <v-data-table :headers="headers" :items="items"></v-data-table>
-                            <!-- Should be a data table here -->
+                            <EasyDataTable :headers="th(message.text)" :items="td(message.text)"/>
                         </v-card-text>
                     </v-card>
                 </v-row>
@@ -174,11 +173,6 @@
                             text: response.data,
                             speaker: 0
                         })
-                        if(typeof response.data === 'object' || Array.isArray(response.data)) {
-                            console.log('Object detected')
-                            this.headers = Object.keys(response.data[0]).map(key => ({ text: key, value: key }));
-                            this.items = response.data;
-                        }
                     }).catch(error => {
                         console.log("Invalid request", error)
                     })
@@ -189,13 +183,20 @@
                 console.log(this.messages)
                 console.log(msg)
                 if(typeof msg == 'string' || typeof msg == 'number') return true
-                else {
-                    // this.headers = Object.keys(msg[0]).map(key => ({ text: key, value: key }));
-                    // this.items = Object.values(msg)
-                    // console.log(this.headers)
-                    // console.log(this.items)
-                    return false
-                }
+                else return false
+            },
+            th(msg) {
+                // Get the keys of the first item
+                const keys = Object.keys(msg[0]);
+
+                // Map the keys to header objects
+                return keys.map(key => ({
+                text: key.toUpperCase(),
+                value: key
+                }));
+            },
+            td(msg) {
+                return msg
             }
         }
     }
