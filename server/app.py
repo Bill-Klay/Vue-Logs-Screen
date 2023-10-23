@@ -11,6 +11,7 @@ import pandas as pd
 import logging
 from pandasai import PandasAI
 from pandasai.llm.openai import OpenAI
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -27,7 +28,7 @@ app.logger.setLevel(logging.INFO)  # Set the minimum log level to INFO
 # Initialize the TinyDB database
 # Global variables can be read anywhere without specifying, but need to declared within the function when writing to it
 db = TinyDB('D:\Compliance Monitoring\Logs-Screen\server\db.json')
-server, database, engine = None, None, None
+server, database, engine, filename = None, None, None, None
 
 # class Register for signing users 
 class Register(Resource):
@@ -168,16 +169,17 @@ class Server(Resource):
 
 class PowerBI(Resource):
     def post(self):
+        global filename
         parser = reqparse.RequestParser()
         parser.add_argument('prompt', type=str, required=True, help='Prompt is required')
         args = parser.parse_args()
         try:
-            df = pd.read_excel("NBIX Qordata KRI.xlsx")
+            df = pd.read_excel(filename)
         except ValueError:
             print("Could not read file")
             return Response(status=400)
         try:
-            llm = OpenAI(api_token="your_key_here") # Change this!
+            llm = OpenAI(api_token="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") # Change this!
             pandas_ai = PandasAI(llm)
             res = pandas_ai(df, prompt=args['prompt'])
             if isinstance(res, str) or isinstance(res, int):
@@ -190,6 +192,16 @@ class PowerBI(Resource):
         except Exception as e:
             print("Error occurred: ", e)
             return Response(status=400)
+        
+    def put(self):
+        global filename
+        if 'file' in request.files:
+            file = request.files['file']
+            filename = file.filename
+            directory = '.\\'
+            file.save(os.path.join(directory, file.filename)) # handle file path
+            return 'File uploaded successfully'
+        return 'No file uploaded'
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
