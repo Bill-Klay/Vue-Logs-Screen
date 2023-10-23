@@ -194,15 +194,18 @@ class PowerBI(Resource):
             return Response(status=400)
         
     def put(self):
-        global filename
-        if 'file' in request.files:
-            print(request.files)
-            file = request.files['file']
-            filename = file.filename
-            directory = './'
-            file.save(os.path.join(directory, file.filename)) # handle file path
-            return 'File uploaded successfully'
-        return 'No file uploaded'
+        try:
+            global filename
+            if 'file' in request.files:
+                print(request.files)
+                file = request.files['file']
+                filename = file.filename
+                directory = './'
+                file.save(os.path.join(directory, file.filename)) # handle file path
+                return 'File uploaded successfully'
+            return 'No file uploaded'
+        except Exception as e:
+            return str(e), 400
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
