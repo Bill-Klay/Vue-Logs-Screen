@@ -179,7 +179,7 @@ class PowerBI(Resource):
             print("Could not read file")
             return Response(status=400)
         try:
-            llm = OpenAI(api_token="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") # Change this!
+            llm = OpenAI(api_token="your-api-key") # Change this!
             pandas_ai = PandasAI(llm)
             res = pandas_ai(df, prompt=args['prompt'])
             if isinstance(res, str) or isinstance(res, int):
