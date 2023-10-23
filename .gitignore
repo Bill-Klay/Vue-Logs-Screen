@@ -8,6 +8,7 @@ node_modules
 server/my_env
 server/pandasai.log
 server/cache
+server/app.py
 
 # Log files
 npm-debug.log*
