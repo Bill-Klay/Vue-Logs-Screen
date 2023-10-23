@@ -196,9 +196,10 @@ class PowerBI(Resource):
     def put(self):
         global filename
         if 'file' in request.files:
+            print(request.files)
             file = request.files['file']
             filename = file.filename
-            directory = '.\\'
+            directory = './'
             file.save(os.path.join(directory, file.filename)) # handle file path
             return 'File uploaded successfully'
         return 'No file uploaded'
