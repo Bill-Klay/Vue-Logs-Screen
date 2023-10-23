@@ -131,7 +131,7 @@
                 snackExecution: false,
                 isLogout: false,
                 report: null,
-                backend: 'http://127.0.0.1:5000',
+                backend: 'http://3.29.98.36:5000',
                 toggleValue: 'Power BI',
                 file: null,
                 messages: [
