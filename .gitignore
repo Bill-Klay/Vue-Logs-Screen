@@ -5,6 +5,9 @@ node_modules
 # local env files
 .env.local
 .env.*.local
+server/my_env
+server/pandasai.log
+server/cache
 
 # Log files
 npm-debug.log*

@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/Login.vue'),
+    component: () => import('@/views/PowerBI.vue'),
     beforeEnter: (to, from ,next) => {
       if (localStorage.getItem('token')) next('/home');
       else next();
