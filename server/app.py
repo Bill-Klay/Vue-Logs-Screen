@@ -182,7 +182,7 @@ class PowerBI(Resource):
             llm = OpenAI(api_token="your-api-key") # Change this!
             pandas_ai = PandasAI(llm)
             res = pandas_ai(df, prompt=args['prompt'])
-            if isinstance(res, str) or isinstance(res, int):
+            if isinstance(res, str) or isinstance(res, int) or isinstance(res, float):
                 data_json = res
             else:
                 res = pd.DataFrame(res, columns=res.columns, index=res.index)
