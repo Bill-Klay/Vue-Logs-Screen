@@ -8,9 +8,6 @@
                 <v-btn block color="#5dbea3">Compliance Monitoring</v-btn>
             </v-list-item>
             <v-list-item>
-                <v-btn block color="#a881af" @click="powerBi" dark>Power BI</v-btn>
-            </v-list-item>
-            <v-list-item>
                 <v-btn disabled block>Expense Monitoring Audit</v-btn>
             </v-list-item>
             <v-list-item>
@@ -35,13 +32,25 @@
                     <VueMultiselect class="mt-6" v-model="databaseName" :options="databaseOptions" placeholder="Select Database" @select="databaseConnection" ></VueMultiselect>
                     <v-row justify="space-between" class="mt-6">
                         <v-col cols="4">
-                            <v-btn color="success" elevation="5" @click="getData" block>Fetch Data</v-btn>
+                            <v-tooltip text="Fetch data for the selected database connection" location="bottom">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn v-bind="props" color="success" elevation="5" @click="getData" block>Fetch</v-btn>
+                                </template>
+                            </v-tooltip>
                         </v-col>
                         <v-col cols="4">
-                            <v-btn color="primary" elevation="5" @click="commitChanges" block>Commit Change</v-btn>
+                            <v-tooltip text="Publish the changes to the database" location="bottom">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn v-bind="props" color="primary" elevation="5" @click="commitChanges"  block>Commit</v-btn>
+                                </template>
+                            </v-tooltip>
                         </v-col>
                         <v-col cols="4">
-                            <v-btn color="warning" elevation="5" @click="executeJob" block>Execute Job</v-btn>
+                            <v-tooltip text="Execute job steps" location="bottom">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn v-bind="props" color="warning" elevation="5" @click="executeJob" block>Execute</v-btn>
+                                </template>
+                            </v-tooltip>
                         </v-col>
                     </v-row>
                 </v-col>
@@ -146,9 +155,6 @@
             logout() {
                 localStorage.removeItem('token')
                 this.$router.push('/login')
-            },
-            powerBi() {
-                this.$router.push('/powerBi')
             },
             closeSnack() {
                 this.snackExecution = false
