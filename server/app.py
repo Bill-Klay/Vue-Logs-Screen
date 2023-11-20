@@ -9,9 +9,6 @@ from sqlalchemy.sql import text
 from sqlalchemy.exc import OperationalError
 import pandas as pd
 import logging
-from pandasai import PandasAI
-from pandasai.llm.openai import OpenAI
-import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -27,7 +24,7 @@ app.logger.setLevel(logging.INFO)  # Set the minimum log level to INFO
 
 # Initialize the TinyDB database
 # Global variables can be read anywhere without specifying, but need to declared within the function when writing to it
-db = TinyDB('D:\Compliance Monitoring\Logs-Screen\server\db.json')
+db = TinyDB('D:\Compliance Monitoring\Vue-Logs-Screen\server\db.json')
 server, database, engine, filename = None, None, None, None
 
 # class Register for signing users 
@@ -167,52 +164,11 @@ class Server(Resource):
             app.logger.error('Error occurred: %s', e)
             return Response(status=400)
 
-class PowerBI(Resource):
-    def post(self):
-        global filename
-        parser = reqparse.RequestParser()
-        parser.add_argument('prompt', type=str, required=True, help='Prompt is required')
-        args = parser.parse_args()
-        try:
-            df = pd.read_excel(filename)
-        except ValueError:
-            print("Could not read file")
-            return Response(status=400)
-        try:
-            llm = OpenAI(api_token="your-api-key") # Change this!
-            pandas_ai = PandasAI(llm)
-            res = pandas_ai(df, prompt=args['prompt'])
-            if isinstance(res, str) or isinstance(res, int) or isinstance(res, float):
-                data_json = res
-            else:
-                res = pd.DataFrame(res, columns=res.columns, index=res.index)
-                df_dict = res.to_dict(orient='records')
-                data_json = jsonify(df_dict)
-            return data_json
-        except Exception as e:
-            print("Error occurred: ", e)
-            return Response(status=400)
-        
-    def put(self):
-        try:
-            global filename
-            if 'file' in request.files:
-                print(request.files)
-                file = request.files['file']
-                filename = file.filename
-                directory = './'
-                file.save(os.path.join(directory, file.filename)) # handle file path
-                return 'File uploaded successfully'
-            return 'No file uploaded'
-        except Exception as e:
-            return str(e), 400
-
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(Data, '/getdata')
 api.add_resource(Server, '/server')
 api.add_resource(Database, '/database')
-api.add_resource(PowerBI, '/powerbi')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

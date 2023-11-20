@@ -35,16 +35,11 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/PowerBI.vue'),
+    component: () => import('@/views/Login.vue'),
     beforeEnter: (to, from ,next) => {
       if (localStorage.getItem('token')) next('/home');
       else next();
     }   
-  },
-  {
-    path: '/powerbi',
-    name: 'PowerBI',
-    component: () => import('@/views/PowerBI.vue')
   },
   {
     path: '/404',

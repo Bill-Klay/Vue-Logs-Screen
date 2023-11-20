@@ -105,10 +105,10 @@
             return {
                 embedConfig: {
                     type: "report",
-                    id: "c9cdae98-7661-4669-8f84-2beedf742acc",
-                    embedUrl: "https://app.powerbi.com/reportEmbed?reportId=c9cdae98-7661-4669-8f84-2beedf742acc&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVVTLU5PUlRILUNFTlRSQUwtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7InVzYWdlTWV0cmljc1ZOZXh0Ijp0cnVlfX0%3d",
-                    accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSIsImtpZCI6IjlHbW55RlBraGMzaE91UjIybXZTdmduTG83WSJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMDI2ZTA1ODUtMGY2ZC00ZWIyLWJhOTMtOGM0YTRkNDg4M2M0LyIsImlhdCI6MTY5ODA0NTEyNywibmJmIjoxNjk4MDQ1MTI3LCJleHAiOjE2OTgwNTA4MjAsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84VUFBQUFqRDUxUjlHd3pJa2hWQWZtblI1N3Njd0p1dXJRcDdtUDVMNkpnZ1NzUFBqaGVZMlNXWDUvN05Pamw0OFZHdktuVzZHM3R3WWpkVU1LVWVQamtleUVyOUpHYXlNMUZ0c1BSaUZMelgvbGtIYz0iLCJhbXIiOlsicHdkIiwicnNhIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIwIiwiZGV2aWNlaWQiOiI1N2Y1MzlkMC1jYWZkLTRjNmEtYTFiOC1mYmQ1MGFjYTk5ZDAiLCJmYW1pbHlfbmFtZSI6IktoYW4iLCJnaXZlbl9uYW1lIjoiTXVoYW1tYWQgQmlsYWwiLCJpcGFkZHIiOiIxMDMuNy42MC43NiIsIm5hbWUiOiJNdWhhbW1hZCBCaWxhbCBLaGFuIiwib2lkIjoiMjIyMGJhYTktOWRlNy00ZTFkLThlYmEtZjNkNmU3MzQwMTFkIiwicHVpZCI6IjEwMDMyMDAwRjA3NkE1NjgiLCJyaCI6IjAuQVhjQWhRVnVBbTBQc2s2Nms0eEtUVWlEeEFrQUFBQUFBQUFBd0FBQUFBQUFBQUIzQUpvLiIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiIsInNpZ25pbl9zdGF0ZSI6WyJrbXNpIl0sInN1YiI6Im4wWjFzM0VfY0Y0TjZTZUpkdUNIMVdtS2lHN2Z5MWlFaVlYWml2OThlc2ciLCJ0aWQiOiIwMjZlMDU4NS0wZjZkLTRlYjItYmE5My04YzRhNGQ0ODgzYzQiLCJ1bmlxdWVfbmFtZSI6ImJpbGFsLmtoYW5AcW9yZGF0YS5jb20iLCJ1cG4iOiJiaWxhbC5raGFuQHFvcmRhdGEuY29tIiwidXRpIjoiUnJVdThGZkh2a2VqNTFld0pXWmpBQSIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.s4R7lDtRwFWwUZt6v1OhcJeHz_Fdd78wKigZFCvUaSMGx9F3djhujE5uoi49KAUfpzbOMESoRknb9TAS9ltdlH_r5XyuAsvhCrTVIvpIKSi38ar0oDyid2Ga8lGc7Lt4JRq1px-MW-gpKxDRN6sNZ8LD7RMrYbrSbItJh1mUpE5jIl5quPO5Yp9exTDdF8Hbylkz2hQx9ywT4acmc8X7ybTKrqCMISN2G2n7vsT7mEBdri11Iky2YOswlniXr2hqu626YK5FSaaflXW717ChLcz3qYwAt-ro5JNtTe8q_15c1-rY392ADAybPZuYdKoFnPU6B4TE8V-fF8qiEcdA0A",
-                    datasetIds: ["e2343861-7dde-4f5a-a024-a79a613589d2"],
+                    id: "dashboard_id_here",
+                    embedUrl: "embed_url_here",
+                    accessToken: "access_token_here",
+                    datasetIds: ["dataset_id_here"],
                     tokenType: models.TokenType.Aad,
                     // hostname: "https://app.powerbi.com",
                     viewMode: models.QnaMode.Interactive,
