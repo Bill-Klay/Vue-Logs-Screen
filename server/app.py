@@ -24,7 +24,7 @@ app.logger.setLevel(logging.INFO)  # Set the minimum log level to INFO
 
 # Initialize the TinyDB database
 # Global variables can be read anywhere without specifying, but need to declared within the function when writing to it
-db = TinyDB('D:\Compliance Monitoring\Vue-Logs-Screen\server\db.json')
+db = TinyDB('.\db.json')
 server, database, engine = None, None, None
 
 # class Register for signing users 
