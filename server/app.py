@@ -25,7 +25,7 @@ app.logger.setLevel(logging.INFO)  # Set the minimum log level to INFO
 # Initialize the TinyDB database
 # Global variables can be read anywhere without specifying, but need to declared within the function when writing to it
 db = TinyDB('D:\Compliance Monitoring\Vue-Logs-Screen\server\db.json')
-server, database, engine, filename = None, None, None, None
+server, database, engine = None, None, None
 
 # class Register for signing users 
 class Register(Resource):
@@ -70,8 +70,6 @@ class Login(Resource):
 class Database(Resource):
     @jwt_required()
     def put(self):
-        # global server, engine, database
-        # database = request.args.get('db')  # whilst here the parameters are not in JSON hence need to be jsonified before being retrieved from vue
         global database, engine
         parser = reqparse.RequestParser()
         parser.add_argument('db', type=str, required=True, help='Database name is required') # also has a default parameter
@@ -147,6 +145,23 @@ class Data(Resource):
             return {"message": "No data for " + table_name, "color": "warning"}, 200
 
         return df.to_json(orient='records')
+    
+    @jwt_required()
+    def put(self):
+        global engine
+        parser = reqparse.RequestParser()
+        parser.add_argument('queries', action='append', required=True, help='SQL queries are required')
+        args = parser.parse_args()
+        queries = args["queries"]
+        with engine.connect() as conn:
+            for query in queries:
+                try:
+                    conn.execute(query)
+                except OperationalError as e:
+                    app.logger.error('Error occurred: %s', e)
+                    return {"message": "Could not reset: " + str(e) , "color": "error"}, 400
+
+        return {"message": "Data refreshed. Execute Job to see effects.", "color": "success"}, 200
 
 class Server(Resource):
     @jwt_required()
@@ -163,12 +178,52 @@ class Server(Resource):
         except OperationalError as e:
             app.logger.error('Error occurred: %s', e)
             return Response(status=400)
+        
+class JobSteps(Resource):
+    @jwt_required()
+    def get(self):
+        global server
+        engine = create_engine('mssql+pyodbc://'+server+'/msdb?driver=SQL+Server+Native+Client+11.0')
+        job_name = request.args.get('job_name')
+        try:
+            query = "EXEC sp_help_jobstep @job_name = '"+job_name+"';"
+            data = pd.read_sql(query, engine)
+            retMap = data['step_name'].to_json()
+        except OperationalError as e:
+            app.logger.error('Error occurred: %s', e)
+            return Response(status=400)      
+        return retMap
+
+    @jwt_required()
+    def put(self):
+        global engine
+        param = request.get_json()
+        job_name = param["job_name"]
+        start_step = param["start_step"]
+        query = "EXEC job_execution @job_name = '"+job_name+"', @step_name = '"+start_step+"';"
+        result = pd.read_sql(query, engine)
+        retMap = result['ResultValue'].to_json()
+
+        return retMap
+    
+    @jwt_required()
+    def post(self):
+        global engine
+        try:
+            query = "SELECT name FROM msdb.dbo.sysjobs WHERE name LIKE '%ComplianceMonitoring%';"
+            result = pd.read_sql(query, engine)
+            retMap = result['name'].to_json()
+            return retMap
+        except OperationalError as e:
+            app.logger.error('Error occurred: %s', e)
+            return None, 200
 
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(Data, '/getdata')
 api.add_resource(Server, '/server')
 api.add_resource(Database, '/database')
+api.add_resource(JobSteps, '/jobsteps')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

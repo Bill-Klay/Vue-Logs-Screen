@@ -32,7 +32,7 @@
                     <VueMultiselect class="mt-6" v-model="databaseName" :options="databaseOptions" placeholder="Select Database" @select="databaseConnection" ></VueMultiselect>
                     <v-row justify="space-between" class="mt-6">
                         <v-col cols="4">
-                            <v-tooltip text="Fetch data for the selected database connection" location="bottom">
+                            <v-tooltip text="Fetch data for the connection" location="bottom">
                                 <template v-slot:activator="{ props }">
                                     <v-btn v-bind="props" color="success" elevation="5" @click="getData" block>Fetch</v-btn>
                                 </template>
@@ -48,9 +48,29 @@
                         <v-col cols="4">
                             <v-tooltip text="Execute job steps" location="bottom">
                                 <template v-slot:activator="{ props }">
-                                    <v-btn v-bind="props" color="warning" elevation="5" @click="executeJob" block>Execute</v-btn>
+                                    <v-btn v-bind="props" color="warning" elevation="5" @click="fetchJobName" :loading="jobExecution" block>Execute</v-btn>
                                 </template>
                             </v-tooltip>
+                            <v-dialog v-model="jobDialog" transition="dialog-top-transition" max-width="600">
+                                <v-card>
+                                    <v-toolbar color="purple" class="pl-6" dark>Do you want to execute?</v-toolbar>
+                                    <v-card-text>
+                                        <!-- <div class="newline">EXEC job_execution @job_name = '{{ targetJob }}', @step_name = '{{ startStep }}';</div> -->
+                                        <v-row>
+                                            <v-col class="d-flex newline" cols="12" sm="6">
+                                                <v-select :items="jobName" label="Job Name" v-model="targetJob" @update:model-value="fetchJobSteps"></v-select>
+                                            </v-col>
+                                            <v-col class="d-flex newline" cols="12" sm="6">
+                                                <v-select :items="jobSteps" label="Starting Step" v-model="startStep"></v-select>
+                                            </v-col>
+                                        </v-row>
+                                    </v-card-text>
+                                    <v-card-actions class="justify-end">
+                                        <v-btn variant="text" @click="jobDialog = false">I change my mind</v-btn>
+                                        <v-btn variant="text" @click="executeJob(); jobDialog = false;">Go for it!</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
                         </v-col>
                     </v-row>
                 </v-col>
@@ -80,10 +100,10 @@
                     <v-img src="..\assets\Pandas_Black.png" style="max-width: 85%; max-height: 85%;" container/>
                     <!-- <v-img src="../assets/Pandas_Black.png" aspect-ratio="1" contain></v-img> -->
                     <v-row class="mt-6">
-                        <v-btn class="white--text" color="#8B008B"  variant="outlined" block>Reset Workbench</v-btn>
+                        <v-btn class="white--text" color="#8B008B"  variant="outlined" :loading="reset_workbench" @click="resetWorkbench" block>Reset Workbench</v-btn>
                     </v-row>
                     <v-row class="mt-6">
-                        <v-btn class="white--text" color="#8B008B" variant="outlined" block>Reset Defer</v-btn>
+                        <v-btn class="white--text" color="#8B008B" variant="outlined" :loading="reset_defer" @click="resetDefer" block>Reset Defer</v-btn>
                     </v-row>
                 </v-col>
             </v-row>
@@ -142,7 +162,16 @@
                 snackExecution: false,
                 backend: 'http://127.0.0.1:5000',
                 isLogout: false,
-                dataCountItems: []
+                dataCountItems: [],
+                reset_workbench: false,
+                reset_defer: false,
+                queries: [],
+                jobDialog: false,
+                jobSteps: [],
+                jobName: [],
+                targetJob: '',
+                startStep: '',
+                jobExecution: false,
             }
         },
         methods: {
@@ -159,38 +188,41 @@
             closeSnack() {
                 this.snackExecution = false
             },
+            sessionExpired() {
+                this.snackMessage = 'Session Expired. Please log back in.'
+                this.snackColor = 'warning'
+                this.snackExecution = true
+                this.logout()
+            },
+            reset() {
+                this.jobName = []
+                this.jobSteps = []
+                this.startStep = ''
+                this.targetJob = ''
+            },
             databaseConnection() {
-                const token = localStorage.getItem('token')
-                if (!token) this.$router.push('/login')
-                axios.put(this.backend + '/database', { db: this.databaseName }, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }).then(response => {
+                const token = this.verifySession()
+                axios.put(this.backend + '/database', { db: this.databaseName }, { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
                     this.snackMessage = response.data.message
                     this.snackColor = response.data.color
                     this.snackExecution = true
+                    this.reset()
                 }).catch(error => {
+                    if(error.response.status === 401) this.sessionExpired()
                     console.log("Invalid request", error)
                 })
             },
             fetchDatabases() {
-                const token = localStorage.getItem('token') // replace 'token' with your actual key
-                if (!token) this.$router.push('/login')
-
+                const token = this.verifySession()
                 if (!this.serverName || !this.serverName.ip) {
                     console.error('Server name or IP is not set')
                     return;
                 }
-
-                axios.get(this.backend + '/server?server=' + this.serverName.ip, {
-                    headers: {
-                    'Authorization': `Bearer ${token}`
-                    }
-                }).then(response => {
+                axios.get(this.backend + '/server?server=' + this.serverName.ip, { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
                     this.databaseOptions = Object.values(JSON.parse(response.data))
-                }).catch(error => {
-                    console.error(error)
+                }).catch(err => {
+                    if(err.response.status === 401) this.sessionExpired()
+                    console.error(err)
                 })
             },
             verifyDataFields() {
@@ -202,19 +234,19 @@
                 }
                 else return true
             },
+            verifySession() {
+                const token = localStorage.getItem('token')
+                if (!token) this.$router.push('/login')
+                else return token
+            },
             getData() {
                 if (this.verifyDataFields()) {
-                    const token = localStorage.getItem('token')
-                    if (!token) this.$router.push('/login')
-
-                    axios.get(this.backend + '/database', {
-                        headers: {
-                        'Authorization': `Bearer ${token}`
-                        }
-                    }).then(response => {
+                    const token = this.verifySession()
+                    axios.get(this.backend + '/database', { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
                         this.dataCountItems = Object.entries(response.data).map(([key, value]) => ({ key, value }))
                         this.loading = true
                     }).catch(error => {
+                        if(error.response.status === 401) this.sessionExpired()
                         console.error(error)
                     })
                 }
@@ -224,11 +256,100 @@
                     console.log("Changes will be comitted")
                 }
             },
-            executeJob() {
+            fetchJobName() {
                 if (this.verifyDataFields()) {
-                    console.log("Job will be executed")
+                    this.jobDialog = true
+                    const token = this.verifySession()
+                    axios.post(this.backend + '/jobsteps', {}, { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
+                        this.jobName = Object.values(JSON.parse(response.data));
+                    }).catch(err => {
+                        if(err.response.status === 401) this.sessionExpired()
+                        console.error(err);
+                    });
                 }
-            }
+            },
+            fetchJobSteps() {
+                if (this.verifyDataFields()) {
+                    const token = this.verifySession()
+                    axios.get(this.backend + '/jobsteps?job_name=' + this.targetJob, { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
+                        this.jobSteps = Object.values(JSON.parse(response.data));
+                    }).catch(err => {
+                        if(err.response.status === 401) this.sessionExpired()
+                        console.error(err);
+                    });
+                }
+            },
+            executeJob() {
+                this.jobExecution = true;
+                let updates = {
+                    job_name: this.targetJob,
+                    start_step: this.startStep
+                }
+                const token = this.verifySession()
+                axios.put(this.backend + '/jobsteps', updates, { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
+                    this.jobExecution = false;
+                    try {
+                        this.job_status = Object.values(JSON.parse(response.data));
+                        if (this.job_status[0] == 1) {
+                            this.snackMessage = 'Job Execution in Progress';
+                            this.snackColor = 'default';
+                            this.snackExecutionk = true;
+                        }
+                        else {
+                            this.snackMessage = 'Error in Execution';
+                            this.snackColor = 'error';
+                            this.snackExecution = true;
+                        }
+                    } catch (err) {
+                        this.snackMessage = 'Error in RPC';
+                        this.snackColor = 'error';
+                        this.snackExecution = true;
+                    }
+                }).catch(err => {
+                        if(err.response.status === 401) this.sessionExpired()
+                        console.error(err);
+                    });
+            },
+            resetWorkbench() {
+                if(this.verifyDataFields()) {
+                    this.reset_workbench = true;
+                    this.queries.push('UPDATE speakerAggregateRiskScore SET in_workbench = 0;');
+                    this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET in_workbench = 0;');
+                    this.queries.push('TRUNCATE TABLE workbench_log_attachment;');
+                    this.queries.push('DELETE FROM workbench_log;');
+                    this.queries.push('DELETE FROM workbench;');
+                    this.queries.push('DELETE FROM workbench_entity;');
+                    const token = this.verifySession()
+                    axios.put(this.backend + '/getdata', { queries: this.queries }, { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
+                        this.snackMessage = response.data.message
+                        this.snackColor = response.data.color
+                        this.snackExecution = true
+                        this.queries = []
+                        this.reset_workbench = false
+                    }).catch(err => {
+                        if(err.response.status === 401) this.$router.push('/login')
+                        console.error(err);
+                    });
+                }
+            },
+            resetDefer() {
+                if(this.verifyDataFields()) {
+                    this.reset_defer = true;
+                    this.queries.push('UPDATE speakerAggregateRiskScore SET is_defer = 0;');
+                    this.queries.push('UPDATE speakerAggregateRiskScoreTimeSpan SET is_defer = 0;');
+                    const token = this.verifySession()
+                    axios.put(this.backend + '/getdata', { queries: this.queries }, { headers: {'Authorization': `Bearer ${token}`} }).then(response => {
+                        this.snackMessage = response.data.message
+                        this.snackColor = response.data.color
+                        this.snackExecution = true
+                        this.queries = []
+                        this.reset_defer = false
+                    }).catch(err => {
+                        if(err.response.status === 401) this.$router.push('/login')
+                        console.error(err);
+                    });
+                }
+            },
         }
     }
 </script>
