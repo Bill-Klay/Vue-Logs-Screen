@@ -86,7 +86,7 @@
                 snackMessage: '',
                 snackColor: '',
                 snackExecution: false,
-                backend: 'http://127.0.0.1:5000' // but this value needs to declared when the instance is created
+                backend: 'http://10.0.100.175:5555' // but this value needs to declared when the instance is created
             }
         },
         methods: {

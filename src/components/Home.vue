@@ -160,7 +160,7 @@
                 snackMessage: '',
                 snackColor: '',
                 snackExecution: false,
-                backend: 'http://127.0.0.1:5000',
+                backend: 'http://10.0.100.175:5555',
                 isLogout: false,
                 dataCountItems: [],
                 reset_workbench: false,
@@ -292,7 +292,7 @@
                         this.job_status = Object.values(JSON.parse(response.data));
                         if (this.job_status[0] == 1) {
                             this.snackMessage = 'Job Execution in Progress';
-                            this.snackColor = 'default';
+                            this.snackColor = 'deep-purple-accent-4';
                             this.snackExecutionk = true;
                         }
                         else {

@@ -4,11 +4,12 @@ from flask_restful import Resource, Api, reqparse
 from tinydb import TinyDB, Query
 import bcrypt
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
-from sqlalchemy import create_engine, MetaData, Table, select
+from sqlalchemy import create_engine, MetaData, Table, select, text
 from sqlalchemy.sql import text
 from sqlalchemy.exc import OperationalError
 import pandas as pd
 import logging
+import os
 
 app = Flask(__name__)
 api = Api(app)
@@ -24,7 +25,7 @@ app.logger.setLevel(logging.INFO)  # Set the minimum log level to INFO
 
 # Initialize the TinyDB database
 # Global variables can be read anywhere without specifying, but need to declared within the function when writing to it
-db = TinyDB('.\db.json')
+db = TinyDB('D:\Bilal_Khan\Vue-Logs-Screen\server\db.json')
 server, database, engine = None, None, None
 
 # class Register for signing users 
@@ -156,7 +157,7 @@ class Data(Resource):
         with engine.connect() as conn:
             for query in queries:
                 try:
-                    conn.execute(query)
+                    conn.execute(text(query))
                 except OperationalError as e:
                     app.logger.error('Error occurred: %s', e)
                     return {"message": "Could not reset: " + str(e) , "color": "error"}, 400
@@ -218,6 +219,11 @@ class JobSteps(Resource):
             app.logger.error('Error occurred: %s', e)
             return None, 200
 
+@app.route('/')
+def hello():
+    """Renders a sample page."""
+    return "Hello Friend! Yes, the server is running 🏃"
+
 api.add_resource(Login, '/login')
 api.add_resource(Register, '/register')
 api.add_resource(Data, '/getdata')
@@ -226,4 +232,10 @@ api.add_resource(Database, '/database')
 api.add_resource(JobSteps, '/jobsteps')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    import os
+    HOST = os.environ.get('SERVER_HOST', 'localhost')
+    try:
+        PORT = int(os.environ.get('SERVER_PORT', '5555'))
+    except ValueError:
+        PORT = 5555
+    app.run(HOST, PORT)

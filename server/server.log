@@ -1,0 +1,257 @@
+Exception on /server [GET]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\app.py", line 174, in get
+    engine = create_engine('mssql+pyodbc://'+server+'/master?driver=SQL+Server+Native+Client+11.0')
+  File "<string>", line 2, in create_engine
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\util\deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\create.py", line 601, in create_engine
+    dbapi = dbapi_meth(**dbapi_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\connectors\pyodbc.py", line 60, in import_dbapi
+    return __import__("pyodbc")
+ModuleNotFoundError: No module named 'pyodbc'
+Exception on /server [GET]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\app.py", line 174, in get
+    engine = create_engine('mssql+pyodbc://'+server+'/master?driver=SQL+Server+Native+Client+11.0')
+  File "<string>", line 2, in create_engine
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\util\deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\create.py", line 601, in create_engine
+    dbapi = dbapi_meth(**dbapi_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\connectors\pyodbc.py", line 60, in import_dbapi
+    return __import__("pyodbc")
+ModuleNotFoundError: No module named 'pyodbc'
+Exception on /server [GET]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 167, in decorator
+    verify_jwt_in_request(
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 94, in verify_jwt_in_request
+    jwt_data, jwt_header, jwt_location = _decode_jwt_from_request(
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 358, in _decode_jwt_from_request
+    raise NoAuthorizationError(errors[0])
+flask_jwt_extended.exceptions.NoAuthorizationError: Missing Authorization Header
+Exception on /server [GET]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 167, in decorator
+    verify_jwt_in_request(
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 94, in verify_jwt_in_request
+    jwt_data, jwt_header, jwt_location = _decode_jwt_from_request(
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 358, in _decode_jwt_from_request
+    raise NoAuthorizationError(errors[0])
+flask_jwt_extended.exceptions.NoAuthorizationError: Missing Authorization Header
+Exception on /server [GET]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\app.py", line 174, in get
+    engine = create_engine('mssql+pyodbc://'+server+'/master?driver=SQL+Server+Native+Client+11.0')
+  File "<string>", line 2, in create_engine
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\util\deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\create.py", line 601, in create_engine
+    dbapi = dbapi_meth(**dbapi_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\connectors\pyodbc.py", line 60, in import_dbapi
+    return __import__("pyodbc")
+ModuleNotFoundError: No module named 'pyodbc'
+Exception on /server [GET]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 3292, in raw_connection
+    return self.pool.connect()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 1269, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\impl.py", line 170, in _do_get
+    self._dec_overflow()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 903, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\default.py", line 616, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+pyodbc.InterfaceError: ('28000', "[28000] [Microsoft][SQL Server Native Client 11.0][SQL Server]Login failed for user 'QORDATA\\QD-V-QA-CC$'. (18456) (SQLDriverConnect); [28000] [Microsoft][SQL Server Native Client 11.0][SQL Server]Login failed for user 'QORDATA\\QD-V-QA-CC$'. (18456)")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\app.py", line 176, in get
+    data = pd.read_sql(query, engine)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\pandas\io\sql.py", line 633, in read_sql
+    with pandasSQL_builder(con) as pandas_sql:
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\pandas\io\sql.py", line 832, in pandasSQL_builder
+    return SQLDatabase(con, schema, need_transaction)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\pandas\io\sql.py", line 1539, in __init__
+    con = self.exit_stack.enter_context(con.connect())
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 3268, in connect
+    return self._connection_cls(self)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 147, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 2430, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    self._dbapi_connection = engine.raw_connection()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 3292, in raw_connection
+    return self.pool.connect()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 452, in connect
+    return _ConnectionFairy._checkout(self)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 1269, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 716, in checkout
+    rec = pool._do_get()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\impl.py", line 170, in _do_get
+    self._dec_overflow()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\impl.py", line 167, in _do_get
+    return self._create_connection()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 393, in _create_connection
+    return _ConnectionRecord(self)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 678, in __init__
+    self.__connect()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 903, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\pool\base.py", line 898, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\create.py", line 637, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\default.py", line 616, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+sqlalchemy.exc.InterfaceError: (pyodbc.InterfaceError) ('28000', "[28000] [Microsoft][SQL Server Native Client 11.0][SQL Server]Login failed for user 'QORDATA\\QD-V-QA-CC$'. (18456) (SQLDriverConnect); [28000] [Microsoft][SQL Server Native Client 11.0][SQL Server]Login failed for user 'QORDATA\\QD-V-QA-CC$'. (18456)")
+(Background on this error at: https://sqlalche.me/e/20/rvf5)
+Exception on /getdata [PUT]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 1412, in execute
+    meth = statement._execute_on_connection
+AttributeError: 'str' object has no attribute '_execute_on_connection'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\app.py", line 160, in put
+    conn.execute(query)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 1414, in execute
+    raise exc.ObjectNotExecutableError(statement) from err
+sqlalchemy.exc.ObjectNotExecutableError: Not an executable object: 'UPDATE speakerAggregateRiskScore SET is_defer = 0;'
+Exception on /getdata [PUT]
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 1412, in execute
+    meth = statement._execute_on_connection
+AttributeError: 'str' object has no attribute '_execute_on_connection'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 489, in wrapper
+    resp = resource(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask\views.py", line 109, in view
+    return current_app.ensure_sync(self.dispatch_request)(**kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_restful\__init__.py", line 604, in dispatch_request
+    resp = meth(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\app.py", line 160, in put
+    conn.execute(query)
+  File "D:\Bilal_Khan\Vue-Logs-Screen\server\my_env\lib\site-packages\sqlalchemy\engine\base.py", line 1414, in execute
+    raise exc.ObjectNotExecutableError(statement) from err
+sqlalchemy.exc.ObjectNotExecutableError: Not an executable object: 'UPDATE speakerAggregateRiskScore SET is_defer = 0;'

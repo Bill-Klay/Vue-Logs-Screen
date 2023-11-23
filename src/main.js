@@ -6,8 +6,6 @@
 
 // Components
 import App from './App.vue'
-import Vue3EasyDataTable from 'vue3-easy-data-table';
-import 'vue3-easy-data-table/dist/style.css';
 
 // Composables
 import { createApp } from 'vue'
@@ -16,7 +14,6 @@ import { createApp } from 'vue'
 import { registerPlugins } from '@/plugins'
 
 const app = createApp(App)
-app.component('EasyDataTable', Vue3EasyDataTable);
 registerPlugins(app)
 
 app.mount('#app')
