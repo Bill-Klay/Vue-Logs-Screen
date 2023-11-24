@@ -149,9 +149,9 @@
             return {
                 serverOptions: [ 
                     { name: 'DEV', ip: '10.0.100.173' },
-                    { name: 'QA', ip: '10.0.100.175' },
-                    { name: 'STAGE', ip: '52.88.29.244' },
-                    { name: 'PROD', ip: '44.229.141.215' }
+                    { name: 'QA', ip: '10.0.100.175' }
+                    //{ name: 'STAGE', ip: '52.88.29.244' },
+                    //{ name: 'PROD', ip: '44.229.141.215' }
                 ],
                 serverName: null,
                 databaseOptions: [],
